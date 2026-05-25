@@ -196,7 +196,7 @@ function DistributionPieChart({ stats }: { stats: Statistics }) {
       </div>
 
       {/* Center total overlay (positioned) */}
-      <style>{`
+      <style suppressHydrationWarning>{`
         .recharts-layer.recharts-pie text { font-family: 'Cairo', sans-serif; }
       `}</style>
     </ChartCard>
