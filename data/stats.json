@@ -1,0 +1,19 @@
+{
+  "totalAnalyses": 0,
+  "classifications": {
+    "depression": 0,
+    "anxiety": 0,
+    "stress": 0
+  },
+  "wordFrequency": {},
+  "monthlyData": {
+    "Jan": { "depression": 0, "anxiety": 0, "stress": 0 },
+    "Feb": { "depression": 0, "anxiety": 0, "stress": 0 },
+    "Mar": { "depression": 0, "anxiety": 0, "stress": 0 },
+    "Apr": { "depression": 0, "anxiety": 0, "stress": 0 },
+    "May": { "depression": 0, "anxiety": 0, "stress": 0 },
+    "Jun": { "depression": 0, "anxiety": 0, "stress": 0 }
+  },
+  "accuracyHistory": [],
+  "lastUpdated": "2025-05-25T00:00:00.000Z"
+}
