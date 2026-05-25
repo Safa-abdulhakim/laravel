@@ -27,12 +27,23 @@ const labelConfig = {
   },
 };
 
+const scoreLabels: Record<string, string> = {
+  depression: "الاكتئاب",
+  anxiety: "القلق",
+  stress: "الضغوط النفسية",
+};
+const scoreColors: Record<string, string> = {
+  depression: "#6C63FF",
+  anxiety: "#4ECDC4",
+  stress: "#f59e0b",
+};
+
 function highlightText(text: string, words: string[]) {
   let result = text;
   words.forEach((word) => {
     result = result.replace(
       new RegExp(word, "g"),
-      `<mark style="background: rgba(108,99,255,0.2); color: #6C63FF; border-radius: 4px; padding: 0 3px; font-weight: 700;">${word}</mark>`
+      `<mark style="background:rgba(108,99,255,0.2);color:#6C63FF;border-radius:4px;padding:0 3px;font-weight:700;">${word}</mark>`
     );
   });
   return result;
@@ -49,17 +60,14 @@ export default function AnalysisResult({ result, originalText, onReset }: Props)
 
   return (
     <div className="space-y-6 animate-fade-in">
-      {/* Main Result Card */}
+      {/* ── البطاقة الرئيسية ── */}
       <div
         className="rounded-3xl p-8 text-center relative overflow-hidden"
-        style={{
-          background: config.gradient,
-          boxShadow: `0 20px 60px ${config.color}30`,
-        }}
+        style={{ background: config.gradient, boxShadow: `0 20px 60px ${config.color}30` }}
       >
         <div className="absolute inset-0 opacity-10"
           style={{
-            backgroundImage: "radial-gradient(circle at 20% 50%, white 1px, transparent 1px), radial-gradient(circle at 80% 50%, white 1px, transparent 1px)",
+            backgroundImage: "radial-gradient(circle at 20% 50%, white 1px, transparent 1px)",
             backgroundSize: "30px 30px",
           }}
         />
@@ -68,7 +76,7 @@ export default function AnalysisResult({ result, originalText, onReset }: Props)
           <div className="text-white/80 text-sm font-medium mb-2 uppercase tracking-wider">
             التصنيف المكتشف
           </div>
-          <div className="text-4xl font-black text-white mb-4">{result.labelAr}</div>
+          <div className="text-4xl font-black text-white mb-4">{result.label_ar}</div>
           <div
             className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-white font-bold text-lg"
             style={{ background: "rgba(255,255,255,0.2)", backdropFilter: "blur(10px)" }}
@@ -80,7 +88,7 @@ export default function AnalysisResult({ result, originalText, onReset }: Props)
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Scores */}
+        {/* ── نسب التصنيفات ── */}
         <div
           className="rounded-2xl p-6"
           style={{ background: "var(--card)", border: "1px solid var(--border)", boxShadow: "var(--shadow-sm)" }}
@@ -90,26 +98,23 @@ export default function AnalysisResult({ result, originalText, onReset }: Props)
             <h3 className="font-bold" style={{ color: "var(--text)" }}>نسب التصنيفات</h3>
           </div>
           <div className="space-y-4">
-            {result.scores.map((score) => (
-              <div key={score.label}>
+            {Object.entries(result.scores).map(([key, score]) => (
+              <div key={key}>
                 <div className="flex justify-between items-center mb-2">
                   <span className="text-sm font-semibold" style={{ color: "var(--text)" }}>
-                    {score.labelAr}
+                    {scoreLabels[key]}
                   </span>
-                  <span className="text-sm font-bold" style={{ color: score.color }}>
-                    {score.score}%
+                  <span className="text-sm font-bold" style={{ color: scoreColors[key] }}>
+                    {score}%
                   </span>
                 </div>
-                <div
-                  className="w-full h-3 rounded-full overflow-hidden"
-                  style={{ background: "var(--background)" }}
-                >
+                <div className="w-full h-3 rounded-full overflow-hidden" style={{ background: "var(--background)" }}>
                   <div
                     className="h-full rounded-full transition-all duration-1000"
                     style={{
-                      width: `${score.score}%`,
-                      background: score.color,
-                      boxShadow: `0 0 8px ${score.color}60`,
+                      width: `${score}%`,
+                      background: scoreColors[key],
+                      boxShadow: `0 0 8px ${scoreColors[key]}60`,
                     }}
                   />
                 </div>
@@ -118,7 +123,7 @@ export default function AnalysisResult({ result, originalText, onReset }: Props)
           </div>
         </div>
 
-        {/* Symptoms */}
+        {/* ── الأعراض المكتشفة ── */}
         <div
           className="rounded-2xl p-6"
           style={{ background: "var(--card)", border: "1px solid var(--border)", boxShadow: "var(--shadow-sm)" }}
@@ -132,11 +137,7 @@ export default function AnalysisResult({ result, originalText, onReset }: Props)
               <span
                 key={symptom}
                 className="text-sm px-3 py-1.5 rounded-full font-medium"
-                style={{
-                  background: config.bg,
-                  color: config.color,
-                  border: `1px solid ${config.border}`,
-                }}
+                style={{ background: config.bg, color: config.color, border: `1px solid ${config.border}` }}
               >
                 {symptom}
               </span>
@@ -145,7 +146,7 @@ export default function AnalysisResult({ result, originalText, onReset }: Props)
         </div>
       </div>
 
-      {/* Highlighted Text */}
+      {/* ── النص المحلَّل ── */}
       <div
         className="rounded-2xl p-6"
         style={{ background: "var(--card)", border: "1px solid var(--border)", boxShadow: "var(--shadow-sm)" }}
@@ -158,41 +159,26 @@ export default function AnalysisResult({ result, originalText, onReset }: Props)
         </div>
         <div
           className="p-4 rounded-xl text-base leading-loose"
-          style={{
-            background: "var(--background)",
-            color: "var(--text)",
-            direction: "rtl",
-            fontFamily: "'Cairo', sans-serif",
-          }}
-          dangerouslySetInnerHTML={{
-            __html: highlightText(originalText, result.highlightedWords),
-          }}
+          style={{ background: "var(--background)", color: "var(--text)", direction: "rtl", fontFamily: "'Cairo', sans-serif" }}
+          dangerouslySetInnerHTML={{ __html: highlightText(originalText, result.highlighted_words) }}
         />
         <div className="mt-3 flex items-center gap-2">
-          <div
-            className="w-4 h-4 rounded"
-            style={{ background: "rgba(108,99,255,0.2)" }}
-          />
+          <div className="w-4 h-4 rounded" style={{ background: "rgba(108,99,255,0.2)" }} />
           <span className="text-xs" style={{ color: "var(--text-muted)" }}>
             الكلمات المضيئة تمثل المؤشرات النفسية الرئيسية
           </span>
         </div>
       </div>
 
-      {/* Recommendation */}
+      {/* ── التوصية ── */}
       <div
         className="rounded-2xl p-6"
-        style={{
-          background: "rgba(78, 205, 196, 0.08)",
-          border: "1px solid rgba(78,205,196,0.2)",
-        }}
+        style={{ background: "rgba(78,205,196,0.08)", border: "1px solid rgba(78,205,196,0.2)" }}
       >
         <div className="flex items-start gap-3">
           <CheckCircle className="w-5 h-5 mt-0.5 flex-shrink-0" style={{ color: "#4ECDC4" }} />
           <div>
-            <h3 className="font-bold mb-2" style={{ color: "var(--text)" }}>
-              توصية النظام
-            </h3>
+            <h3 className="font-bold mb-2" style={{ color: "var(--text)" }}>توصية النظام</h3>
             <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>
               {result.recommendation}
             </p>
@@ -203,16 +189,11 @@ export default function AnalysisResult({ result, originalText, onReset }: Props)
         </div>
       </div>
 
-      {/* Reset Button */}
+      {/* ── زر إعادة التحليل ── */}
       <button
         onClick={onReset}
         className="w-full py-4 rounded-2xl font-bold flex items-center justify-center gap-3 transition-all duration-300 hover:scale-[1.01]"
-        style={{
-          background: "var(--card)",
-          color: "var(--text)",
-          border: "2px solid var(--border)",
-          boxShadow: "var(--shadow-sm)",
-        }}
+        style={{ background: "var(--card)", color: "var(--text)", border: "2px solid var(--border)", boxShadow: "var(--shadow-sm)" }}
       >
         <RotateCcw className="w-5 h-5" />
         تحليل نص جديد

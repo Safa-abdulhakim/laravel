@@ -1,60 +1,19 @@
 "use client";
 
 import { useState } from "react";
-import { Brain, Send, RotateCcw, Sparkles, AlertCircle } from "lucide-react";
+import { Brain, Send, RotateCcw, Sparkles, AlertCircle, Wifi, WifiOff } from "lucide-react";
 import AnalysisResult from "./AnalysisResult";
 import LoadingAnimation from "./LoadingAnimation";
 
 export type AnalysisData = {
   label: "depression" | "anxiety" | "stress";
-  labelAr: string;
+  label_ar: string;
   confidence: number;
-  scores: { label: string; labelAr: string; score: number; color: string }[];
+  scores: { depression: number; anxiety: number; stress: number };
   symptoms: string[];
-  highlightedWords: string[];
+  highlighted_words: string[];
   recommendation: string;
-};
-
-const MOCK_RESULTS: Record<string, AnalysisData> = {
-  default: {
-    label: "depression",
-    labelAr: "الاكتئاب",
-    confidence: 87.4,
-    scores: [
-      { label: "depression", labelAr: "الاكتئاب", score: 87, color: "#6C63FF" },
-      { label: "anxiety", labelAr: "القلق", score: 9, color: "#4ECDC4" },
-      { label: "stress", labelAr: "الضغوط النفسية", score: 4, color: "#f59e0b" },
-    ],
-    symptoms: ["فقدان الاهتمام", "الإرهاق المزمن", "اضطراب النوم", "الشعور بالفراغ", "العزلة الاجتماعية"],
-    highlightedWords: ["تعبت", "زهقت", "ما أقدر", "ما في فايدة", "حزين"],
-    recommendation: "تشير النتائج إلى وجود مؤشرات للاكتئاب. يُنصح بالتحدث مع متخصص في الصحة النفسية للحصول على تقييم أكثر دقة.",
-  },
-  anxiety: {
-    label: "anxiety",
-    labelAr: "القلق",
-    confidence: 82.1,
-    scores: [
-      { label: "depression", labelAr: "الاكتئاب", score: 12, color: "#6C63FF" },
-      { label: "anxiety", labelAr: "القلق", score: 82, color: "#4ECDC4" },
-      { label: "stress", labelAr: "الضغوط النفسية", score: 6, color: "#f59e0b" },
-    ],
-    symptoms: ["التوتر المستمر", "الخوف المفرط", "صعوبة التركيز", "الأرق", "التفكير الزائد"],
-    highlightedWords: ["خايف", "قلقان", "توتر", "ما أقدر أنام", "كل شي يخوفني"],
-    recommendation: "تشير النتائج إلى مستوى مرتفع من القلق. تقنيات الاسترخاء والتنفس قد تساعد، ويُنصح بزيارة متخصص.",
-  },
-  stress: {
-    label: "stress",
-    labelAr: "الضغوط النفسية",
-    confidence: 79.3,
-    scores: [
-      { label: "depression", labelAr: "الاكتئاب", score: 15, color: "#6C63FF" },
-      { label: "anxiety", labelAr: "القلق", score: 6, color: "#4ECDC4" },
-      { label: "stress", labelAr: "الضغوط النفسية", score: 79, color: "#f59e0b" },
-    ],
-    symptoms: ["الإجهاد اليومي", "ضغط العمل أو الدراسة", "التعب الجسدي", "قلة الوقت", "المشكلات اليومية"],
-    highlightedWords: ["مشغول", "تعبان", "ضغط", "كثير مشاكل", "ما في وقت"],
-    recommendation: "الحالة تعكس ضغوطاً يومية طبيعية. يُنصح بإدارة الوقت وممارسة الرياضة والراحة الكافية.",
-  },
+  source?: "live" | "demo";
 };
 
 export default function TextAnalyzer() {
@@ -72,37 +31,34 @@ export default function TextAnalyzer() {
     setLoading(true);
     setResult(null);
 
-    await new Promise((r) => setTimeout(r, 2200));
+    try {
+      const res = await fetch("/api/analyze", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text }),
+      });
 
-    // Simulate result based on text content
-    const lower = text.toLowerCase();
-    let res = MOCK_RESULTS.default;
-    if (lower.includes("خايف") || lower.includes("قلق") || lower.includes("خوف")) {
-      res = MOCK_RESULTS.anxiety;
-    } else if (lower.includes("ضغط") || lower.includes("مشغول") || lower.includes("شغل")) {
-      res = MOCK_RESULTS.stress;
+      if (!res.ok) throw new Error("فشل التحليل");
+
+      const data: AnalysisData = await res.json();
+      setResult(data);
+    } catch {
+      setError("حدث خطأ أثناء التحليل. يرجى المحاولة مرة أخرى.");
+    } finally {
+      setLoading(false);
     }
-
-    setLoading(false);
-    setResult(res);
   };
 
-  const reset = () => {
-    setText("");
-    setResult(null);
-    setError("");
-  };
+  const reset = () => { setText(""); setResult(null); setError(""); };
 
   return (
     <div className="max-w-4xl mx-auto">
+      {loading && <LoadingAnimation />}
+
       {!result ? (
         <div
           className="rounded-3xl p-8 sm:p-10"
-          style={{
-            background: "var(--card)",
-            boxShadow: "var(--shadow-lg)",
-            border: "1px solid var(--border)",
-          }}
+          style={{ background: "var(--card)", boxShadow: "var(--shadow-lg)", border: "1px solid var(--border)" }}
         >
           {/* Header */}
           <div className="flex items-center gap-4 mb-8">
@@ -143,12 +99,7 @@ export default function TextAnalyzer() {
                 e.target.style.boxShadow = "none";
               }}
             />
-
-            {/* Char counter */}
-            <div
-              className="absolute bottom-3 left-3 text-xs"
-              style={{ color: "var(--text-muted)" }}
-            >
+            <div className="absolute bottom-3 left-3 text-xs" style={{ color: "var(--text-muted)" }}>
               {text.length} حرف
             </div>
           </div>
@@ -162,27 +113,20 @@ export default function TextAnalyzer() {
           )}
 
           {/* Tips */}
-          <div
-            className="p-4 rounded-2xl mb-6"
-            style={{
-              background: "rgba(108, 99, 255, 0.06)",
-              border: "1px solid rgba(108,99,255,0.12)",
-            }}
-          >
+          <div className="p-4 rounded-2xl mb-6"
+            style={{ background: "rgba(108,99,255,0.06)", border: "1px solid rgba(108,99,255,0.12)" }}>
             <div className="flex items-center gap-2 mb-2">
               <Sparkles className="w-4 h-4" style={{ color: "#6C63FF" }} />
-              <span className="text-sm font-bold" style={{ color: "#6C63FF" }}>
-                نصائح لتحليل أفضل
-              </span>
+              <span className="text-sm font-bold" style={{ color: "#6C63FF" }}>نصائح لتحليل أفضل</span>
             </div>
             <ul className="text-sm space-y-1" style={{ color: "var(--text-muted)" }}>
               <li>• اكتب بشكل طبيعي باللهجة اليمنية كما تتحدث</li>
-              <li>• صِف مشاعرك وأفكارك بحرية — لا توجد إجابة صحيحة أو خاطئة</li>
+              <li>• صِف مشاعرك وأفكارك بحرية</li>
               <li>• كلما كان النص أطول، كانت النتائج أدق</li>
             </ul>
           </div>
 
-          {/* Actions */}
+          {/* Buttons */}
           <div className="flex gap-4">
             <button
               onClick={analyze}
@@ -198,11 +142,7 @@ export default function TextAnalyzer() {
               <button
                 onClick={reset}
                 className="w-14 h-14 rounded-2xl flex items-center justify-center transition-all hover:scale-105"
-                style={{
-                  background: "var(--background)",
-                  color: "var(--text-muted)",
-                  border: "1px solid var(--border)",
-                }}
+                style={{ background: "var(--background)", color: "var(--text-muted)", border: "1px solid var(--border)" }}
               >
                 <RotateCcw className="w-5 h-5" />
               </button>
@@ -211,11 +151,32 @@ export default function TextAnalyzer() {
         </div>
       ) : (
         <div>
+          {/* مؤشر مصدر البيانات */}
+          {result.source === "demo" && (
+            <div
+              className="flex items-center gap-2 px-4 py-2.5 rounded-xl mb-4 text-sm"
+              style={{ background: "rgba(245,158,11,0.1)", border: "1px solid rgba(245,158,11,0.2)", color: "#f59e0b" }}
+            >
+              <WifiOff className="w-4 h-4 flex-shrink-0" />
+              <span>
+                <strong>وضع العرض:</strong> Python API غير متصل — النتائج تجريبية.
+                شغّل Python وستتحول النتائج لحقيقية تلقائياً.
+              </span>
+            </div>
+          )}
+          {result.source === "live" && (
+            <div
+              className="flex items-center gap-2 px-4 py-2.5 rounded-xl mb-4 text-sm"
+              style={{ background: "rgba(16,185,129,0.1)", border: "1px solid rgba(16,185,129,0.2)", color: "#10b981" }}
+            >
+              <Wifi className="w-4 h-4 flex-shrink-0" />
+              <span><strong>متصل بالنموذج الحقيقي ✓</strong> — النتائج من AI مدرَّب</span>
+            </div>
+          )}
+
           <AnalysisResult result={result} originalText={text} onReset={reset} />
         </div>
       )}
-
-      {loading && <LoadingAnimation />}
     </div>
   );
 }
