@@ -4,8 +4,8 @@
 <div class="container my-5">
     <nav aria-label="breadcrumb" class="mb-4">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
-            <li class="breadcrumb-item"><a href="{{ route('products.index') }}">Shop</a></li>
+            <li class="breadcrumb-item"><a href="{{ route('home') }}">{{ __('common.home') }}</a></li>
+            <li class="breadcrumb-item"><a href="{{ route('products.index') }}">{{ __('common.shop') }}</a></li>
             @if($product->category)
                 <li class="breadcrumb-item"><a href="{{ route('products.index', ['category' => $product->category]) }}">{{ $product->category }}</a></li>
             @endif
@@ -24,15 +24,15 @@
                 <span class="badge bg-primary mb-2">{{ $product->category }}</span>
             @endif
             <h1 class="fw-bold mb-2">{{ $product->name }}</h1>
-            <div class="d-flex align-items-center gap-3 mb-4">
+            <div class="d-flex align-items-center gap-3 mb-4 flex-wrap">
                 <span class="display-6 fw-bold text-primary">${{ number_format($product->price, 2) }}</span>
                 @if($product->stock > 0)
                     <span class="badge bg-success fs-6">
                         <i class="bi bi-check-circle me-1"></i>
-                        {{ $product->stock <= 5 ? 'Only ' . $product->stock . ' left!' : 'In Stock' }}
+                        {{ $product->stock <= 5 ? __('products.only_left', ['count' => $product->stock]) : __('products.in_stock') }}
                     </span>
                 @else
-                    <span class="badge bg-danger fs-6"><i class="bi bi-x-circle me-1"></i>Out of Stock</span>
+                    <span class="badge bg-danger fs-6"><i class="bi bi-x-circle me-1"></i>{{ __('products.out_of_stock') }}</span>
                 @endif
             </div>
 
@@ -43,7 +43,7 @@
                 @csrf
                 <div class="row g-3 align-items-end">
                     <div class="col-auto">
-                        <label class="form-label fw-semibold">Quantity</label>
+                        <label class="form-label fw-semibold">{{ __('common.quantity') }}</label>
                         <div class="input-group" style="width:140px;">
                             <button type="button" class="btn btn-outline-secondary" onclick="let i=document.getElementById('qty');if(i.value>1)i.value--">-</button>
                             <input type="number" id="qty" name="quantity" class="form-control text-center" value="1" min="1" max="{{ $product->stock }}">
@@ -52,26 +52,26 @@
                     </div>
                     <div class="col">
                         <button type="submit" class="btn btn-primary btn-lg px-5">
-                            <i class="bi bi-cart-plus me-2"></i>Add to Cart
+                            <i class="bi bi-cart-plus me-2"></i>{{ __('products.add_to_cart') }}
                         </button>
                     </div>
                 </div>
             </form>
             @else
-                <div class="alert alert-danger"><i class="bi bi-x-circle me-2"></i>This product is currently out of stock.</div>
+                <div class="alert alert-danger"><i class="bi bi-x-circle me-2"></i>{{ __('products.out_of_stock') }}</div>
             @endif
 
-            <div class="mt-4 d-flex gap-3 text-muted small">
-                <span><i class="bi bi-truck me-1"></i>Free shipping over $50</span>
-                <span><i class="bi bi-arrow-return-left me-1"></i>30-day returns</span>
-                <span><i class="bi bi-shield-check me-1"></i>Secure checkout</span>
+            <div class="mt-4 d-flex gap-3 text-muted small flex-wrap">
+                <span><i class="bi bi-truck me-1"></i>{{ __('products.free_ship_msg') }}</span>
+                <span><i class="bi bi-arrow-return-left me-1"></i>{{ __('products.returns_msg') }}</span>
+                <span><i class="bi bi-shield-check me-1"></i>{{ __('products.secure_msg') }}</span>
             </div>
         </div>
     </div>
 
     @if($related->count())
     <div class="mt-5">
-        <h3 class="fw-bold mb-4">Related Products</h3>
+        <h3 class="fw-bold mb-4">{{ __('products.related') }}</h3>
         <div class="row g-4">
             @foreach($related as $item)
             <div class="col-sm-6 col-md-3">

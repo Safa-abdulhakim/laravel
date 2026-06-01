@@ -1,0 +1,25 @@
+<?php
+
+return [
+    'title'           => 'Shopping Cart',
+    'empty'           => 'Your cart is empty',
+    'empty_sub'       => "Looks like you haven't added anything to your cart yet.",
+    'start_shopping'  => 'Start Shopping',
+    'cart_items'      => 'Cart Items (:count)',
+    'clear_all'       => 'Clear All',
+    'clear_confirm'   => 'Clear entire cart?',
+    'continue'        => 'Continue Shopping',
+    'order_summary'   => 'Order Summary',
+    'subtotal'        => 'Subtotal',
+    'shipping'        => 'Shipping',
+    'free'            => 'Free',
+    'checkout'        => 'Proceed to Checkout',
+    'remove'          => 'Remove',
+    'free_ship_msg'   => 'Add $:amount more for free shipping!',
+    'updated'         => 'Cart updated successfully.',
+    'added'           => '":name" added to cart successfully!',
+    'removed'         => '":name" removed from cart.',
+    'cleared'         => 'Cart cleared.',
+    'not_available'   => 'Product is not available.',
+    'not_enough'      => 'Not enough stock available. Available: :count',
+];

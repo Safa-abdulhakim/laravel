@@ -1,16 +1,16 @@
 @extends('layouts.admin')
-@section('title', isset($product) ? 'Edit Product' : 'Add Product')
-@section('page-title', isset($product) ? 'Edit Product' : 'Add New Product')
-@section('page-subtitle', isset($product) ? 'Update product details' : 'Add a product to your catalog')
+@section('title', isset($product) ? __('admin.edit_product', ['name' => $product->name]) : __('admin.new_product'))
+@section('page-title', isset($product) ? __('admin.edit_product', ['name' => '']) : __('admin.new_product'))
+@section('page-subtitle', isset($product) ? __('admin.edit_product_sub') : __('admin.add_product_sub'))
 
 @section('content')
 <div class="row justify-content-center">
 <div class="col-lg-9">
     <div class="card border-0 shadow-sm">
         <div class="card-header bg-transparent py-3 d-flex justify-content-between align-items-center">
-            <h5 class="mb-0">{{ isset($product) ? 'Edit: ' . $product->name : 'New Product' }}</h5>
+            <h5 class="mb-0">{{ isset($product) ? $product->name : __('admin.new_product') }}</h5>
             <a href="{{ route('admin.products.index') }}" class="btn btn-sm btn-outline-secondary">
-                <i class="bi bi-arrow-left me-1"></i>Back
+                <i class="bi bi-arrow-left me-1"></i>{{ __('common.back') }}
             </a>
         </div>
         <div class="card-body">
@@ -28,30 +28,28 @@
                 <div class="row g-4">
                     <div class="col-md-8">
                         <div class="mb-3">
-                            <label class="form-label fw-semibold">Product Name *</label>
+                            <label class="form-label fw-semibold">{{ __('products.name') }} *</label>
                             <input type="text" name="name" class="form-control @error('name') is-invalid @enderror"
-                                   value="{{ old('name', $product->name ?? '') }}" placeholder="Enter product name" required>
+                                   value="{{ old('name', $product->name ?? '') }}" required>
                             @error('name')<div class="invalid-feedback">{{ $message }}</div>@enderror
                         </div>
                         <div class="mb-3">
-                            <label class="form-label fw-semibold">Description</label>
-                            <textarea name="description" class="form-control @error('description') is-invalid @enderror"
-                                      rows="4" placeholder="Describe the product...">{{ old('description', $product->description ?? '') }}</textarea>
-                            @error('description')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                            <label class="form-label fw-semibold">{{ __('common.description') }}</label>
+                            <textarea name="description" class="form-control" rows="4">{{ old('description', $product->description ?? '') }}</textarea>
                         </div>
                         <div class="row g-3">
                             <div class="col-md-6">
-                                <label class="form-label fw-semibold">Price ($) *</label>
+                                <label class="form-label fw-semibold">{{ __('products.price_field') }} *</label>
                                 <div class="input-group">
                                     <span class="input-group-text">$</span>
                                     <input type="number" name="price" step="0.01" min="0"
                                            class="form-control @error('price') is-invalid @enderror"
-                                           value="{{ old('price', $product->price ?? '') }}" placeholder="0.00" required>
+                                           value="{{ old('price', $product->price ?? '') }}" required>
                                     @error('price')<div class="invalid-feedback">{{ $message }}</div>@enderror
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                <label class="form-label fw-semibold">Stock Quantity *</label>
+                                <label class="form-label fw-semibold">{{ __('products.stock_field') }} *</label>
                                 <input type="number" name="stock" min="0"
                                        class="form-control @error('stock') is-invalid @enderror"
                                        value="{{ old('stock', $product->stock ?? 0) }}" required>
@@ -59,10 +57,10 @@
                             </div>
                         </div>
                         <div class="mt-3">
-                            <label class="form-label fw-semibold">Category</label>
+                            <label class="form-label fw-semibold">{{ __('common.category') }}</label>
                             <input type="text" name="category" class="form-control"
                                    value="{{ old('category', $product->category ?? '') }}"
-                                   placeholder="e.g. Electronics, Clothing, Books" list="category-list">
+                                   placeholder="{{ __('products.category_ph') }}" list="category-list">
                             <datalist id="category-list">
                                 @foreach(['Electronics','Clothing','Books','Home & Garden','Sports','Toys','Beauty','Food'] as $cat)
                                     <option value="{{ $cat }}">
@@ -70,30 +68,28 @@
                             </datalist>
                         </div>
                     </div>
-
                     <div class="col-md-4">
                         <div class="mb-3">
-                            <label class="form-label fw-semibold">Product Image</label>
+                            <label class="form-label fw-semibold">{{ __('common.image') }}</label>
                             <div class="border rounded-3 p-3 text-center mb-2" style="background:#f8f9fa;">
                                 <img id="preview" src="{{ isset($product) && $product->image ? asset('storage/'.$product->image) : asset('images/no-image.png') }}"
                                      class="img-fluid rounded mb-2" style="max-height:200px;object-fit:contain;" alt="Preview">
                                 <input type="file" name="image" id="imageInput" class="form-control @error('image') is-invalid @enderror"
                                        accept="image/*" onchange="previewImage(this)">
                                 @error('image')<div class="invalid-feedback">{{ $message }}</div>@enderror
-                                <small class="text-muted d-block mt-1">Max 2MB. JPG, PNG, GIF, WebP</small>
+                                <small class="text-muted d-block mt-1">{{ __('products.image_note') }}</small>
                             </div>
                         </div>
-
                         <div class="card bg-light border-0 p-3">
-                            <h6 class="fw-semibold mb-3">Product Status</h6>
+                            <h6 class="fw-semibold mb-3">{{ __('products.status_field') }}</h6>
                             <div class="form-check form-switch">
                                 <input class="form-check-input" type="checkbox" name="status" id="statusToggle" value="1"
                                        {{ old('status', $product->status ?? true) ? 'checked' : '' }}>
                                 <label class="form-check-label fw-semibold" for="statusToggle">
-                                    Active (visible in store)
+                                    {{ __('products.active_visible') }}
                                 </label>
                             </div>
-                            <small class="text-muted mt-2 d-block">Inactive products won't appear in the storefront.</small>
+                            <small class="text-muted mt-2 d-block">{{ __('products.inactive_note') }}</small>
                         </div>
                     </div>
                 </div>
@@ -102,9 +98,9 @@
                 <div class="d-flex gap-3">
                     <button type="submit" class="btn btn-primary px-5">
                         <i class="bi bi-{{ isset($product) ? 'floppy' : 'plus-circle' }} me-2"></i>
-                        {{ isset($product) ? 'Update Product' : 'Create Product' }}
+                        {{ isset($product) ? __('common.update') : __('common.create') }}
                     </button>
-                    <a href="{{ route('admin.products.index') }}" class="btn btn-outline-secondary">Cancel</a>
+                    <a href="{{ route('admin.products.index') }}" class="btn btn-outline-secondary">{{ __('common.cancel') }}</a>
                 </div>
             </form>
         </div>
