@@ -10,6 +10,10 @@ use App\Http\Controllers\Admin\AdminPromptController;
 use App\Http\Controllers\Admin\AdminCategoryController;
 use App\Http\Controllers\Admin\AdminTagController;
 use App\Http\Controllers\Admin\AdminUserController;
+use App\Http\Controllers\LanguageController;
+
+// Language Switcher
+Route::get('/language/{locale}', [LanguageController::class, 'switch'])->name('language.switch');
 
 // Public Routes
 Route::get('/', [HomeController::class, 'index'])->name('home');

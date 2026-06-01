@@ -28,15 +28,15 @@ class AdminUserController extends Controller
     public function toggleRole(User $user)
     {
         $user->update(['role' => $user->role === 'admin' ? 'user' : 'admin']);
-        return redirect()->back()->with('success', 'User role updated!');
+        return redirect()->back()->with('success', __('success_role_updated'));
     }
 
     public function destroy(User $user)
     {
         if ($user->id === auth()->id()) {
-            return redirect()->back()->with('error', 'Cannot delete your own account!');
+            return redirect()->back()->with('error', __('error_delete_self'));
         }
         $user->delete();
-        return redirect()->route('admin.users.index')->with('success', 'User deleted!');
+        return redirect()->route('admin.users.index')->with('success', __('success_user_deleted'));
     }
 }

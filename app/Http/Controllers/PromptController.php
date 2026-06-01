@@ -100,7 +100,7 @@ class PromptController extends Controller
             $prompt->tags()->sync($request->tags);
         }
 
-        return redirect()->route('my-prompts.index')->with('success', 'Prompt created successfully!');
+        return redirect()->route('my-prompts.index')->with('success', __('success_prompt_created'));
     }
 
     public function edit(Prompt $prompt)
@@ -125,7 +125,7 @@ class PromptController extends Controller
             ['favorite' => $request->boolean('favorite')]
         ));
         $prompt->tags()->sync($request->tags ?? []);
-        return redirect()->route('my-prompts.index')->with('success', 'Prompt updated successfully!');
+        return redirect()->route('my-prompts.index')->with('success', __('success_prompt_updated'));
     }
 
     public function destroy(Prompt $prompt)
@@ -134,6 +134,6 @@ class PromptController extends Controller
             abort(403);
         }
         $prompt->delete();
-        return redirect()->back()->with('success', 'Prompt deleted successfully!');
+        return redirect()->back()->with('success', __('success_prompt_deleted'));
     }
 }

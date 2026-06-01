@@ -1,13 +1,18 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ app()->getLocale() }}" dir="{{ app()->getLocale() === 'ar' ? 'rtl' : 'ltr' }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>@yield('title', 'AI Prompt Organizer') - AI Prompts</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>@yield('title', __('site_name')) - {{ __('site_name') }}</title>
+    @if(app()->getLocale() === 'ar')
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    @else
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    @endif
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
             --primary: #7c3aed;
@@ -20,6 +25,7 @@
             --text-muted: #94a3b8;
         }
         * { font-family: 'Inter', sans-serif; }
+        html[lang="ar"] * { font-family: 'Cairo', sans-serif; }
         body { background: var(--dark); color: #e2e8f0; }
 
         .navbar-brand { font-weight: 800; font-size: 1.4rem; }
@@ -76,6 +82,16 @@
         .alert-success { background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.3); color: #10b981; border-radius: 10px; }
         .alert-danger { background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3); color: #f87171; border-radius: 10px; }
 
+        html[dir="rtl"] .navbar-brand { direction: rtl; }
+        html[dir="rtl"] .dropdown-menu-end { right: auto !important; left: 0 !important; }
+        html[dir="rtl"] .me-1, html[dir="rtl"] .me-2 { margin-right: 0 !important; margin-left: 0.25rem !important; }
+        html[dir="rtl"] .ms-auto { margin-left: 0 !important; margin-right: auto !important; }
+        html[dir="rtl"] .ms-2 { margin-left: 0 !important; margin-right: 0.5rem !important; }
+        html[dir="rtl"] .ps-3 { padding-left: 0 !important; padding-right: 1rem !important; }
+        html[dir="rtl"] .text-start { text-align: right !important; }
+        html[dir="rtl"] .float-end { float: left !important; }
+        html[dir="rtl"] .ms-3 { margin-left: 0 !important; margin-right: 1rem !important; }
+
         @media (max-width: 768px) { .hero-title { font-size: 2.2rem; } }
     </style>
     @stack('styles')
@@ -85,23 +101,37 @@
         <div class="container">
             <a class="navbar-brand" href="{{ route('home') }}">
                 <i class="bi bi-lightning-charge-fill text-purple me-2" style="color:#7c3aed"></i>
-                <span>AI Prompt Organizer</span>
+                <span>{{ __('site_name') }}</span>
             </a>
             <button class="navbar-toggler border-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav mx-auto">
-                    <li class="nav-item"><a class="nav-link" href="{{ route('home') }}">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ route('prompts.index') }}">Prompts</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ route('categories.index') }}">Categories</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ route('home') }}">{{ __('nav_home') }}</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ route('prompts.index') }}">{{ __('nav_prompts') }}</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ route('categories.index') }}">{{ __('nav_categories') }}</a></li>
                 </ul>
                 <ul class="navbar-nav ms-auto">
+                    {{-- Language Switcher --}}
+                    <li class="nav-item">
+                        @if(app()->getLocale() === 'ar')
+                            <a href="{{ route('language.switch', 'en') }}" class="nav-link d-flex align-items-center gap-1" title="Switch to English">
+                                <span style="font-size:1.1rem">🇬🇧</span>
+                                <span class="d-none d-md-inline" style="font-size:0.85rem">EN</span>
+                            </a>
+                        @else
+                            <a href="{{ route('language.switch', 'ar') }}" class="nav-link d-flex align-items-center gap-1" title="التبديل للعربية">
+                                <span style="font-size:1.1rem">🇸🇦</span>
+                                <span class="d-none d-md-inline" style="font-size:0.85rem">AR</span>
+                            </a>
+                        @endif
+                    </li>
                     @auth
                         @if(auth()->user()->isAdmin())
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('admin.dashboard') }}">
-                                    <i class="bi bi-shield-check me-1" style="color:#f59e0b"></i>Admin
+                                    <i class="bi bi-shield-check me-1" style="color:#f59e0b"></i>{{ __('nav_admin') }}
                                 </a>
                             </li>
                         @endif
@@ -110,22 +140,22 @@
                                 <i class="bi bi-person-circle me-1"></i>{{ auth()->user()->name }}
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end" style="background:#1e293b;border-color:#334155;">
-                                <li><a class="dropdown-item text-light" href="{{ route('dashboard') }}"><i class="bi bi-grid me-2" style="color:#7c3aed"></i>Dashboard</a></li>
-                                <li><a class="dropdown-item text-light" href="{{ route('my-prompts.index') }}"><i class="bi bi-collection me-2" style="color:#7c3aed"></i>My Prompts</a></li>
-                                <li><a class="dropdown-item text-light" href="{{ route('favorites.index') }}"><i class="bi bi-heart me-2" style="color:#ef4444"></i>Favorites</a></li>
+                                <li><a class="dropdown-item text-light" href="{{ route('dashboard') }}"><i class="bi bi-grid me-2" style="color:#7c3aed"></i>{{ __('nav_dashboard') }}</a></li>
+                                <li><a class="dropdown-item text-light" href="{{ route('my-prompts.index') }}"><i class="bi bi-collection me-2" style="color:#7c3aed"></i>{{ __('nav_my_prompts') }}</a></li>
+                                <li><a class="dropdown-item text-light" href="{{ route('favorites.index') }}"><i class="bi bi-heart me-2" style="color:#ef4444"></i>{{ __('nav_favorites') }}</a></li>
                                 <li><hr class="dropdown-divider border-secondary"></li>
                                 <li>
                                     <form method="POST" action="{{ route('logout') }}">
                                         @csrf
-                                        <button type="submit" class="dropdown-item text-light"><i class="bi bi-box-arrow-right me-2"></i>Logout</button>
+                                        <button type="submit" class="dropdown-item text-light"><i class="bi bi-box-arrow-right me-2"></i>{{ __('nav_logout') }}</button>
                                     </form>
                                 </li>
                             </ul>
                         </li>
                     @else
-                        <li class="nav-item"><a class="nav-link" href="{{ route('login') }}">Login</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ route('login') }}">{{ __('nav_login') }}</a></li>
                         <li class="nav-item ms-2">
-                            <a class="btn btn-gradient btn-sm" href="{{ route('register') }}">Get Started</a>
+                            <a class="btn btn-gradient btn-sm" href="{{ route('register') }}">{{ __('nav_register') }}</a>
                         </li>
                     @endauth
                 </ul>
@@ -158,30 +188,30 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-4 mb-4">
-                    <h5 class="fw-bold mb-2"><span style="background:linear-gradient(135deg,#7c3aed,#06b6d4);-webkit-background-clip:text;-webkit-text-fill-color:transparent">AI Prompt Organizer</span></h5>
-                    <p class="text-muted small">Organize, discover, and share AI prompts for ChatGPT, Claude, Gemini, Midjourney and more.</p>
+                    <h5 class="fw-bold mb-2"><span style="background:linear-gradient(135deg,#7c3aed,#06b6d4);-webkit-background-clip:text;-webkit-text-fill-color:transparent">{{ __('site_name') }}</span></h5>
+                    <p class="text-muted small">{{ __('footer_tagline') }}</p>
                 </div>
                 <div class="col-md-2 mb-4">
-                    <h6 class="fw-semibold mb-3 text-light">Explore</h6>
+                    <h6 class="fw-semibold mb-3 text-light">{{ __('footer_explore') }}</h6>
                     <ul class="list-unstyled">
-                        <li><a href="{{ route('prompts.index') }}" class="text-muted text-decoration-none small">All Prompts</a></li>
-                        <li><a href="{{ route('categories.index') }}" class="text-muted text-decoration-none small">Categories</a></li>
+                        <li><a href="{{ route('prompts.index') }}" class="text-muted text-decoration-none small">{{ __('footer_all_prompts') }}</a></li>
+                        <li><a href="{{ route('categories.index') }}" class="text-muted text-decoration-none small">{{ __('nav_categories') }}</a></li>
                     </ul>
                 </div>
                 <div class="col-md-2 mb-4">
-                    <h6 class="fw-semibold mb-3 text-light">Account</h6>
+                    <h6 class="fw-semibold mb-3 text-light">{{ __('footer_account') }}</h6>
                     <ul class="list-unstyled">
                         @auth
-                            <li><a href="{{ route('dashboard') }}" class="text-muted text-decoration-none small">Dashboard</a></li>
-                            <li><a href="{{ route('my-prompts.create') }}" class="text-muted text-decoration-none small">Add Prompt</a></li>
+                            <li><a href="{{ route('dashboard') }}" class="text-muted text-decoration-none small">{{ __('nav_dashboard') }}</a></li>
+                            <li><a href="{{ route('my-prompts.create') }}" class="text-muted text-decoration-none small">{{ __('nav_add_prompt') }}</a></li>
                         @else
-                            <li><a href="{{ route('login') }}" class="text-muted text-decoration-none small">Login</a></li>
-                            <li><a href="{{ route('register') }}" class="text-muted text-decoration-none small">Register</a></li>
+                            <li><a href="{{ route('login') }}" class="text-muted text-decoration-none small">{{ __('nav_login') }}</a></li>
+                            <li><a href="{{ route('register') }}" class="text-muted text-decoration-none small">{{ __('nav_register') }}</a></li>
                         @endauth
                     </ul>
                 </div>
                 <div class="col-md-4 mb-4">
-                    <h6 class="fw-semibold mb-3 text-light">Platforms</h6>
+                    <h6 class="fw-semibold mb-3 text-light">{{ __('footer_platforms') }}</h6>
                     <div class="d-flex flex-wrap gap-2">
                         @foreach(['ChatGPT','Claude','Gemini','Midjourney','Other'] as $p)
                             <a href="{{ route('prompts.index', ['platform' => $p]) }}" class="platform-badge platform-{{ strtolower($p) }}">{{ $p }}</a>
@@ -190,7 +220,7 @@
                 </div>
             </div>
             <hr class="border-secondary mt-2">
-            <p class="text-center text-muted small mb-0">&copy; {{ date('Y') }} AI Prompt Organizer. Built with Laravel 11.</p>
+            <p class="text-center text-muted small mb-0">&copy; {{ date('Y') }} {{ __('footer_copyright') }}</p>
         </div>
     </footer>
 

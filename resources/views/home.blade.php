@@ -1,5 +1,5 @@
 @extends('layouts.main')
-@section('title', 'Home')
+@section('title', __('nav_home'))
 @section('content')
 
 {{-- Hero Section --}}
@@ -9,22 +9,22 @@
             <div class="col-lg-7">
                 <div class="mb-3">
                     <span class="badge" style="background:rgba(124,58,237,0.2);color:#a78bfa;border:1px solid rgba(124,58,237,0.3);font-size:0.85rem;padding:8px 16px;border-radius:20px;">
-                        <i class="bi bi-stars me-1"></i> The Ultimate AI Prompt Library
+                        <i class="bi bi-stars me-1"></i> {{ __('hero_badge') }}
                     </span>
                 </div>
-                <h1 class="hero-title mb-4">Organize Your<br>AI Prompts<br>Like a Pro</h1>
-                <p class="hero-subtitle mb-5">Save, categorize, and discover powerful prompts for ChatGPT, Claude, Gemini, Midjourney and more. Boost your productivity with the right prompt every time.</p>
+                <h1 class="hero-title mb-4">{{ __('hero_title_line1') }}<br>{{ __('hero_title_line2') }}<br>{{ __('hero_title_line3') }}</h1>
+                <p class="hero-subtitle mb-5">{{ __('hero_subtitle') }}</p>
                 <div class="d-flex flex-wrap gap-3">
                     <a href="{{ route('prompts.index') }}" class="btn btn-gradient btn-lg">
-                        <i class="bi bi-collection me-2"></i>Browse Prompts
+                        <i class="bi bi-collection me-2"></i>{{ __('hero_browse') }}
                     </a>
                     @guest
                         <a href="{{ route('register') }}" class="btn btn-outline-gradient btn-lg">
-                            <i class="bi bi-plus-circle me-2"></i>Get Started Free
+                            <i class="bi bi-plus-circle me-2"></i>{{ __('hero_free') }}
                         </a>
                     @else
                         <a href="{{ route('my-prompts.create') }}" class="btn btn-outline-gradient btn-lg">
-                            <i class="bi bi-plus-circle me-2"></i>Add Prompt
+                            <i class="bi bi-plus-circle me-2"></i>{{ __('hero_add') }}
                         </a>
                     @endguest
                 </div>
@@ -57,25 +57,25 @@
             <div class="col-6 col-md-3">
                 <div class="stat-card">
                     <div class="stat-number">{{ $stats['prompts'] }}+</div>
-                    <p class="text-muted small mb-0">Public Prompts</p>
+                    <p class="text-muted small mb-0">{{ __('stats_public_prompts') }}</p>
                 </div>
             </div>
             <div class="col-6 col-md-3">
                 <div class="stat-card">
                     <div class="stat-number">{{ $stats['categories'] }}</div>
-                    <p class="text-muted small mb-0">Categories</p>
+                    <p class="text-muted small mb-0">{{ __('stats_categories') }}</p>
                 </div>
             </div>
             <div class="col-6 col-md-3">
                 <div class="stat-card">
                     <div class="stat-number">{{ $stats['tags'] }}</div>
-                    <p class="text-muted small mb-0">Tags</p>
+                    <p class="text-muted small mb-0">{{ __('stats_tags') }}</p>
                 </div>
             </div>
             <div class="col-6 col-md-3">
                 <div class="stat-card">
                     <div class="stat-number">5</div>
-                    <p class="text-muted small mb-0">AI Platforms</p>
+                    <p class="text-muted small mb-0">{{ __('stats_platforms') }}</p>
                 </div>
             </div>
         </div>
@@ -87,10 +87,10 @@
     <div class="container">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <div>
-                <h2 class="fw-bold text-white mb-1">Featured Prompts</h2>
-                <p class="text-muted mb-0">Most viewed prompts from our community</p>
+                <h2 class="fw-bold text-white mb-1">{{ __('featured_prompts') }}</h2>
+                <p class="text-muted mb-0">{{ __('featured_subtitle') }}</p>
             </div>
-            <a href="{{ route('prompts.index') }}" class="btn btn-outline-gradient">View All <i class="bi bi-arrow-right ms-1"></i></a>
+            <a href="{{ route('prompts.index') }}" class="btn btn-outline-gradient">{{ __('view_all') }} <i class="bi bi-arrow-right ms-1"></i></a>
         </div>
         <div class="row g-4">
             @foreach($featuredPrompts as $prompt)
@@ -114,7 +114,7 @@
                             @else
                                 <span></span>
                             @endif
-                            <a href="{{ route('prompts.show', $prompt) }}" class="btn btn-gradient btn-sm">View <i class="bi bi-arrow-right ms-1"></i></a>
+                            <a href="{{ route('prompts.show', $prompt) }}" class="btn btn-gradient btn-sm">{{ __('view') }} <i class="bi bi-arrow-right ms-1"></i></a>
                         </div>
                     </div>
                 </div>
@@ -128,8 +128,8 @@
 <section class="py-5" style="background:rgba(15,23,42,0.5)">
     <div class="container">
         <div class="text-center mb-5">
-            <h2 class="fw-bold text-white mb-2">Browse by Category</h2>
-            <p class="text-muted">Find the perfect prompt for your use case</p>
+            <h2 class="fw-bold text-white mb-2">{{ __('browse_by_category') }}</h2>
+            <p class="text-muted">{{ __('browse_category_subtitle') }}</p>
         </div>
         <div class="row g-3">
             @php
@@ -143,7 +143,7 @@
                         @php $icon = $icons[$category->name] ?? 'lightning'; $color = $colors[$category->name] ?? '#7c3aed'; @endphp
                         <i class="bi bi-{{ $icon }} fs-2 mb-2" style="color:{{ $color }}"></i>
                         <h6 class="fw-semibold text-white mb-1">{{ $category->name }}</h6>
-                        <p class="text-muted small mb-0">{{ $category->prompts_count }} prompts</p>
+                        <p class="text-muted small mb-0">{{ __('prompts_in_category', ['count' => $category->prompts_count]) }}</p>
                     </div>
                 </a>
             </div>
@@ -158,9 +158,9 @@
     <div class="container">
         <div class="card-dark p-5 text-center" style="background:linear-gradient(135deg,rgba(124,58,237,0.15),rgba(6,182,212,0.1));border-color:rgba(124,58,237,0.3)">
             <i class="bi bi-stars fs-1 mb-3" style="color:#a78bfa"></i>
-            <h2 class="fw-bold text-white mb-3">Start Building Your Prompt Library</h2>
-            <p class="text-muted mb-4">Join thousands of AI enthusiasts who organize their prompts with us. Free forever.</p>
-            <a href="{{ route('register') }}" class="btn btn-gradient btn-lg px-5">Create Free Account</a>
+            <h2 class="fw-bold text-white mb-3">{{ __('cta_title') }}</h2>
+            <p class="text-muted mb-4">{{ __('cta_subtitle') }}</p>
+            <a href="{{ route('register') }}" class="btn btn-gradient btn-lg px-5">{{ __('cta_button') }}</a>
         </div>
     </div>
 </section>

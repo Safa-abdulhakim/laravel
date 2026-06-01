@@ -21,7 +21,7 @@ class AdminTagController extends Controller
     public function store(StoreTagRequest $request)
     {
         Tag::create(['name' => $request->name, 'slug' => Str::slug($request->name)]);
-        return redirect()->route('admin.tags.index')->with('success', 'Tag created!');
+        return redirect()->route('admin.tags.index')->with('success', __('success_tag_created'));
     }
 
     public function edit(Tag $tag)
@@ -32,12 +32,12 @@ class AdminTagController extends Controller
     public function update(StoreTagRequest $request, Tag $tag)
     {
         $tag->update(['name' => $request->name, 'slug' => Str::slug($request->name)]);
-        return redirect()->route('admin.tags.index')->with('success', 'Tag updated!');
+        return redirect()->route('admin.tags.index')->with('success', __('success_tag_updated'));
     }
 
     public function destroy(Tag $tag)
     {
         $tag->delete();
-        return redirect()->route('admin.tags.index')->with('success', 'Tag deleted!');
+        return redirect()->route('admin.tags.index')->with('success', __('success_tag_deleted'));
     }
 }

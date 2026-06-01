@@ -1,15 +1,15 @@
 @extends('layouts.dashboard')
-@section('title', 'All Prompts')
-@section('page-title', 'All Prompts')
+@section('title', __('all_prompts_title'))
+@section('page-title', __('all_prompts_title'))
 @section('content')
 
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h4 class="fw-bold text-white mb-0">
-        All Prompts
-        <span class="badge ms-2" style="background:rgba(124,58,237,0.2);color:#a78bfa;font-size:0.75rem;border-radius:8px;">Admin</span>
+        {{ __('all_prompts_title') }}
+        <span class="badge ms-2" style="background:rgba(124,58,237,0.2);color:#a78bfa;font-size:0.75rem;border-radius:8px;">{{ __('admin_badge') }}</span>
     </h4>
     <a href="{{ route('admin.prompts.create') }}" class="btn btn-gradient">
-        <i class="bi bi-plus me-2"></i>New Prompt
+        <i class="bi bi-plus me-2"></i>{{ __('new_prompt_btn') }}
     </a>
 </div>
 
@@ -18,18 +18,18 @@
     <form method="GET" class="row g-2 align-items-end">
         <div class="col-md-4">
             <input type="text" name="search" value="{{ request('search') }}"
-                class="form-control form-control-dark" placeholder="Search title or content...">
+                class="form-control form-control-dark" placeholder="{{ __('search_placeholder') }}">
         </div>
         <div class="col-md-2">
             <select name="status" class="form-select form-select-dark">
-                <option value="">All Status</option>
-                <option value="public"  {{ request('status')=='public'  ? 'selected':'' }}>Public</option>
-                <option value="private" {{ request('status')=='private' ? 'selected':'' }}>Private</option>
+                <option value="">{{ __('all_status') }}</option>
+                <option value="public"  {{ request('status')=='public'  ? 'selected':'' }}>{{ __('status_public') }}</option>
+                <option value="private" {{ request('status')=='private' ? 'selected':'' }}>{{ __('status_private') }}</option>
             </select>
         </div>
         <div class="col-md-2">
             <select name="platform" class="form-select form-select-dark">
-                <option value="">All Platforms</option>
+                <option value="">{{ __('all_platforms') }}</option>
                 @foreach($platforms as $p)
                     <option value="{{ $p }}" {{ request('platform')==$p ? 'selected':'' }}>{{ $p }}</option>
                 @endforeach
@@ -37,7 +37,7 @@
         </div>
         <div class="col-md-2">
             <select name="category" class="form-select form-select-dark">
-                <option value="">All Categories</option>
+                <option value="">{{ __('all_categories') }}</option>
                 @foreach($categories as $cat)
                     <option value="{{ $cat->id }}" {{ request('category')==$cat->id ? 'selected':'' }}>{{ $cat->name }}</option>
                 @endforeach
@@ -45,7 +45,7 @@
         </div>
         <div class="col-md-2 d-flex gap-2">
             <button type="submit" class="btn btn-gradient flex-grow-1">
-                <i class="bi bi-funnel me-1"></i>Filter
+                <i class="bi bi-funnel me-1"></i>{{ __('filter') }}
             </button>
             @if(request()->hasAny(['search','status','platform','category']))
                 <a href="{{ route('admin.prompts.index') }}" class="btn"
@@ -62,8 +62,8 @@
         <table class="table table-dark-custom mb-0">
             <thead>
                 <tr>
-                    <th>Title</th><th>User</th><th>Platform</th><th>Category</th>
-                    <th>Status</th><th>Views</th><th>Date</th><th>Actions</th>
+                    <th>{{ __('title_label') }}</th><th>{{ __('user_col') }}</th><th>{{ __('platform_label') }}</th><th>{{ __('category_label') }}</th>
+                    <th>{{ __('status') }}</th><th>{{ __('views') }}</th><th>{{ __('date') }}</th><th>{{ __('actions') }}</th>
                 </tr>
             </thead>
             <tbody>
@@ -108,7 +108,7 @@
                 <tr>
                     <td colspan="8" class="text-center text-muted py-5">
                         <i class="bi bi-collection d-block fs-2 mb-2" style="color:#334155"></i>
-                        No prompts found
+                        {{ __('no_prompts') }}
                     </td>
                 </tr>
                 @endforelse

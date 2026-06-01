@@ -7,8 +7,8 @@
         <div class="mb-5">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb" style="background:transparent">
-                    <li class="breadcrumb-item"><a href="{{ route('home') }}" class="text-muted text-decoration-none">Home</a></li>
-                    <li class="breadcrumb-item"><a href="{{ route('categories.index') }}" class="text-muted text-decoration-none">Categories</a></li>
+                    <li class="breadcrumb-item"><a href="{{ route('home') }}" class="text-muted text-decoration-none">{{ __('breadcrumb_home') }}</a></li>
+                    <li class="breadcrumb-item"><a href="{{ route('categories.index') }}" class="text-muted text-decoration-none">{{ __('breadcrumb_categories') }}</a></li>
                     <li class="breadcrumb-item active text-light">{{ $category->name }}</li>
                 </ol>
             </nav>
@@ -16,7 +16,7 @@
             @if($category->description)
                 <p class="text-muted">{{ $category->description }}</p>
             @endif
-            <p class="text-muted small">{{ $prompts->total() }} prompts in this category</p>
+            <p class="text-muted small">{{ $prompts->total() }} {{ __('nav_prompts') }}</p>
         </div>
 
         @if($prompts->count() > 0)
@@ -36,7 +36,7 @@
                                     <span class="tag-pill">{{ $tag->name }}</span>
                                 @endforeach
                             </div>
-                            <a href="{{ route('prompts.show', $prompt) }}" class="btn btn-gradient btn-sm">View Prompt</a>
+                            <a href="{{ route('prompts.show', $prompt) }}" class="btn btn-gradient btn-sm">{{ __('view') }}</a>
                         </div>
                     </div>
                 </div>
@@ -48,7 +48,7 @@
         @else
             <div class="text-center py-5">
                 <i class="bi bi-folder-x fs-1 mb-3" style="color:#334155"></i>
-                <h4 class="text-muted">No prompts in this category yet</h4>
+                <h4 class="text-muted">{{ __('no_prompts_category') }}</h4>
             </div>
         @endif
     </div>

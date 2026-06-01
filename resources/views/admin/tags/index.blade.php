@@ -1,12 +1,12 @@
 @extends('layouts.dashboard')
-@section('title', 'Tags')
-@section('page-title', 'Manage Tags')
+@section('title', __('manage_tags'))
+@section('page-title', __('manage_tags'))
 @section('content')
 
 <div class="d-flex justify-content-between align-items-center mb-4">
-    <h4 class="fw-bold text-white mb-0">Tags</h4>
+    <h4 class="fw-bold text-white mb-0">{{ __('manage_tags') }}</h4>
     <a href="{{ route('admin.tags.create') }}" class="btn btn-gradient">
-        <i class="bi bi-plus me-2"></i>New Tag
+        <i class="bi bi-plus me-2"></i>{{ __('new_tag_btn') }}
     </a>
 </div>
 
@@ -14,7 +14,7 @@
     <div class="table-responsive">
         <table class="table table-dark-custom mb-0">
             <thead>
-                <tr><th>Tag</th><th>Slug</th><th>Prompts</th><th>Created</th><th>Actions</th></tr>
+                <tr><th>{{ __('tag_name_label') }}</th><th>Slug</th><th>{{ __('nav_prompts') }}</th><th>{{ __('joined_label') }}</th><th>{{ __('actions') }}</th></tr>
             </thead>
             <tbody>
                 @forelse($tags as $tag)
@@ -55,7 +55,7 @@
                 <tr>
                     <td colspan="5" class="text-center text-muted py-5">
                         <i class="bi bi-tags d-block fs-2 mb-2" style="color:#334155"></i>
-                        No tags yet
+                        {{ __('no_results') }}
                     </td>
                 </tr>
                 @endforelse

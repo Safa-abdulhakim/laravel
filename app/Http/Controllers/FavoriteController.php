@@ -29,6 +29,6 @@ class FavoriteController extends Controller
             return response()->json(['favorited' => $favorited]);
         }
 
-        return redirect()->back()->with('success', $favorited ? 'Added to favorites!' : 'Removed from favorites!');
+        return redirect()->back()->with('success', $favorited ? __('success_added_fav') : __('success_removed_fav'));
     }
 }

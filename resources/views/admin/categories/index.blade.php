@@ -1,12 +1,12 @@
 @extends('layouts.dashboard')
-@section('title', 'Categories')
-@section('page-title', 'Manage Categories')
+@section('title', __('manage_categories'))
+@section('page-title', __('manage_categories'))
 @section('content')
 
 <div class="d-flex justify-content-between align-items-center mb-4">
-    <h4 class="fw-bold text-white mb-0">Categories</h4>
+    <h4 class="fw-bold text-white mb-0">{{ __('nav_categories') }}</h4>
     <a href="{{ route('admin.categories.create') }}" class="btn btn-gradient">
-        <i class="bi bi-plus me-2"></i>New Category
+        <i class="bi bi-plus me-2"></i>{{ __('new_category_btn') }}
     </a>
 </div>
 
@@ -15,7 +15,7 @@
         <table class="table table-dark-custom mb-0">
             <thead>
                 <tr>
-                    <th>Name</th><th>Slug</th><th>Description</th><th>Prompts</th><th>Actions</th>
+                    <th>{{ __('title_label') }}</th><th>Slug</th><th>{{ __('description_label') }}</th><th>{{ __('nav_prompts') }}</th><th>{{ __('actions') }}</th>
                 </tr>
             </thead>
             <tbody>
@@ -59,7 +59,7 @@
                 <tr>
                     <td colspan="5" class="text-center text-muted py-5">
                         <i class="bi bi-folder-x d-block fs-2 mb-2" style="color:#334155"></i>
-                        No categories yet
+                        {{ __('no_results') }}
                     </td>
                 </tr>
                 @endforelse

@@ -1,12 +1,12 @@
 @extends('layouts.dashboard')
-@section('title', 'Users')
-@section('page-title', 'Manage Users')
+@section('title', __('users_page_title'))
+@section('page-title', __('users_page_title'))
 @section('content')
 
 <div class="d-flex justify-content-between align-items-center mb-4">
-    <h4 class="fw-bold text-white mb-0">Users</h4>
+    <h4 class="fw-bold text-white mb-0">{{ __('users_page_title') }}</h4>
     <span class="badge" style="background:rgba(124,58,237,0.2);color:#a78bfa;font-size:0.85rem;padding:8px 14px;border-radius:10px;">
-        {{ $users->total() }} total
+        {{ $users->total() }} {{ __('nav_prompts') }}
     </span>
 </div>
 
@@ -15,18 +15,18 @@
     <form method="GET" class="row g-2 align-items-end">
         <div class="col-md-6">
             <input type="text" name="search" value="{{ request('search') }}"
-                class="form-control form-control-dark" placeholder="Search by name or email...">
+                class="form-control form-control-dark" placeholder="{{ __('search_users') }}">
         </div>
         <div class="col-md-2">
             <button type="submit" class="btn btn-gradient w-100">
-                <i class="bi bi-search me-1"></i>Search
+                <i class="bi bi-search me-1"></i>{{ __('search') }}
             </button>
         </div>
         @if(request('search'))
         <div class="col-md-2">
             <a href="{{ route('admin.users.index') }}" class="btn w-100"
                 style="background:rgba(239,68,68,0.1);color:#f87171;border:1px solid rgba(239,68,68,0.3);border-radius:10px;">
-                <i class="bi bi-x me-1"></i>Clear
+                <i class="bi bi-x me-1"></i>{{ __('clear_filters') }}
             </a>
         </div>
         @endif
@@ -37,7 +37,7 @@
     <div class="table-responsive">
         <table class="table table-dark-custom mb-0">
             <thead>
-                <tr><th>User</th><th>Email</th><th>Role</th><th>Prompts</th><th>Joined</th><th>Actions</th></tr>
+                <tr><th>{{ __('user_col') }}</th><th>{{ __('email_col') }}</th><th>{{ __('role_col') }}</th><th>{{ __('prompts_col') }}</th><th>{{ __('joined_label') }}</th><th>{{ __('actions') }}</th></tr>
             </thead>
             <tbody>
                 @forelse($users as $user)
@@ -50,7 +50,7 @@
                             </div>
                             <span class="fw-semibold text-white">{{ $user->name }}</span>
                             @if($user->id === auth()->id())
-                                <span class="badge" style="background:rgba(6,182,212,0.15);color:#06b6d4;font-size:0.65rem">You</span>
+                                <span class="badge" style="background:rgba(6,182,212,0.15);color:#06b6d4;font-size:0.65rem">{{ __('you_label') }}</span>
                             @endif
                         </div>
                     </td>
@@ -58,11 +58,11 @@
                     <td>
                         @if($user->role === 'admin')
                             <span class="badge" style="background:rgba(245,158,11,0.15);color:#f59e0b;border:1px solid rgba(245,158,11,0.3)">
-                                <i class="bi bi-shield-check me-1"></i>Admin
+                                <i class="bi bi-shield-check me-1"></i>{{ __('administrator_label') }}
                             </span>
                         @else
                             <span class="badge" style="background:rgba(148,163,184,0.15);color:#94a3b8;border:1px solid #334155">
-                                <i class="bi bi-person me-1"></i>User
+                                <i class="bi bi-person me-1"></i>{{ __('regular_user_label') }}
                             </span>
                         @endif
                     </td>
@@ -80,7 +80,7 @@
                                     @method('PATCH')
                                     <button type="submit" class="btn btn-sm"
                                         style="background:rgba(245,158,11,0.15);color:#f59e0b;border:none;border-radius:8px;"
-                                        title="{{ $user->role === 'admin' ? 'Revoke Admin' : 'Make Admin' }}">
+                                        title="{{ $user->role === 'admin' ? __('revoke_admin_title') : __('make_admin_title') }}">
                                         <i class="bi bi-shield-{{ $user->role === 'admin' ? 'x' : 'check' }}"></i>
                                     </button>
                                 </form>
@@ -101,7 +101,7 @@
                 <tr>
                     <td colspan="6" class="text-center text-muted py-5">
                         <i class="bi bi-people d-block fs-2 mb-2" style="color:#334155"></i>
-                        No users found
+                        {{ __('no_results') }}
                     </td>
                 </tr>
                 @endforelse

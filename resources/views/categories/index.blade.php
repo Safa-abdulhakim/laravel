@@ -1,12 +1,12 @@
 @extends('layouts.main')
-@section('title', 'Categories')
+@section('title', __('nav_categories'))
 @section('content')
 
 <div class="py-5">
     <div class="container">
         <div class="text-center mb-5">
-            <h1 class="fw-bold text-white mb-2">Browse Categories</h1>
-            <p class="text-muted">Find prompts organized by topic and use case</p>
+            <h1 class="fw-bold text-white mb-2">{{ __('categories_page_title') }}</h1>
+            <p class="text-muted">{{ __('categories_page_subtitle') }}</p>
         </div>
         <div class="row g-4">
             @php
@@ -31,7 +31,7 @@
                             </div>
                             <div>
                                 <h5 class="fw-bold text-white mb-0">{{ $category->name }}</h5>
-                                <small style="color:{{ $color }}">{{ $category->prompts_count }} prompts</small>
+                                <small style="color:{{ $color }}">{{ __('prompts_in_category', ['count' => $category->prompts_count]) }}</small>
                             </div>
                         </div>
                         @if($category->description)

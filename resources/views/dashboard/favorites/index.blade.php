@@ -1,15 +1,15 @@
 @extends('layouts.dashboard')
-@section('title', 'Favorites')
-@section('page-title', 'My Favorites')
+@section('title', __('my_favorites_title'))
+@section('page-title', __('my_favorites_title'))
 @section('content')
 
 <div class="d-flex justify-content-between align-items-center mb-4">
     <div>
-        <h4 class="fw-bold text-white mb-1">My Favorites</h4>
-        <p class="text-muted small mb-0">{{ $prompts->total() }} saved prompts</p>
+        <h4 class="fw-bold text-white mb-1">{{ __('my_favorites_title') }}</h4>
+        <p class="text-muted small mb-0">{{ __('saved_count', ['count' => $prompts->total()]) }}</p>
     </div>
     <a href="{{ route('prompts.index') }}" class="btn btn-gradient btn-sm">
-        <i class="bi bi-compass me-1"></i>Explore More
+        <i class="bi bi-compass me-1"></i>{{ __('explore_more') }}
     </a>
 </div>
 
@@ -23,7 +23,7 @@
                         <span class="platform-badge platform-{{ strtolower($prompt->platform) }}">{{ $prompt->platform }}</span>
                         <form method="POST" action="{{ route('favorites.toggle', $prompt) }}">
                             @csrf
-                            <button type="submit" class="btn btn-link p-0 border-0" style="color:#ef4444;font-size:1.1rem;" title="Remove from favorites">
+                            <button type="submit" class="btn btn-link p-0 border-0" style="color:#ef4444;font-size:1.1rem;" title="{{ __('remove_from_favorites') }}">
                                 <i class="bi bi-heart-fill"></i>
                             </button>
                         </form>
@@ -42,7 +42,7 @@
                     </div>
                     <div class="d-flex justify-content-between align-items-center mt-auto pt-2" style="border-top:1px solid #334155">
                         <span class="text-muted small"><i class="bi bi-eye me-1"></i>{{ $prompt->views }}</span>
-                        <a href="{{ route('prompts.show', $prompt) }}" class="btn btn-gradient btn-sm">View Prompt</a>
+                        <a href="{{ route('prompts.show', $prompt) }}" class="btn btn-gradient btn-sm">{{ __('view_prompt_btn') }}</a>
                     </div>
                 </div>
             </div>
@@ -55,10 +55,10 @@
 @else
     <div class="card-dark p-5 text-center">
         <i class="bi bi-heart fs-1 mb-3 d-block" style="color:#334155"></i>
-        <h5 class="text-muted mb-2">No favorites yet</h5>
-        <p class="text-muted small mb-4">Save prompts you love to access them quickly.</p>
+        <h5 class="text-muted mb-2">{{ __('no_favorites') }}</h5>
+        <p class="text-muted small mb-4">{{ __('no_favorites_hint') }}</p>
         <a href="{{ route('prompts.index') }}" class="btn btn-gradient">
-            <i class="bi bi-compass me-2"></i>Explore Prompts
+            <i class="bi bi-compass me-2"></i>{{ __('explore_prompts_btn') }}
         </a>
     </div>
 @endif

@@ -1,13 +1,13 @@
 @extends('layouts.main')
-@section('title', 'Browse Prompts')
+@section('title', __('browse_prompts'))
 @section('content')
 
 <div class="py-5">
     <div class="container">
         {{-- Header --}}
         <div class="mb-5">
-            <h1 class="fw-bold text-white mb-2">Browse AI Prompts</h1>
-            <p class="text-muted">Discover {{ $prompts->total() }} prompts from our community</p>
+            <h1 class="fw-bold text-white mb-2">{{ __('browse_prompts') }}</h1>
+            <p class="text-muted">{{ __('discover_prompts', ['count' => $prompts->total()]) }}</p>
         </div>
 
         {{-- Search & Filters --}}
@@ -15,34 +15,34 @@
             <form method="GET" action="{{ route('prompts.index') }}">
                 <div class="row g-3 align-items-end">
                     <div class="col-md-5">
-                        <label class="form-label text-muted small">Search</label>
+                        <label class="form-label text-muted small">{{ __('search') }}</label>
                         <div class="input-group">
                             <span class="input-group-text" style="background:#2d3f55;border-color:#334155;color:#94a3b8"><i class="bi bi-search"></i></span>
-                            <input type="text" name="search" value="{{ request('search') }}" class="form-control search-bar" style="border-left:0" placeholder="Search prompts...">
+                            <input type="text" name="search" value="{{ request('search') }}" class="form-control search-bar" style="border-left:0" placeholder="{{ __('search_placeholder') }}">
                         </div>
                     </div>
                     <div class="col-md-2">
-                        <label class="form-label text-muted small">Category</label>
+                        <label class="form-label text-muted small">{{ __('category_label') }}</label>
                         <select name="category" class="form-select form-select-dark">
-                            <option value="">All Categories</option>
+                            <option value="">{{ __('all_categories') }}</option>
                             @foreach($categories as $cat)
                                 <option value="{{ $cat->id }}" {{ request('category') == $cat->id ? 'selected' : '' }}>{{ $cat->name }}</option>
                             @endforeach
                         </select>
                     </div>
                     <div class="col-md-2">
-                        <label class="form-label text-muted small">Platform</label>
+                        <label class="form-label text-muted small">{{ __('platform_label') }}</label>
                         <select name="platform" class="form-select form-select-dark">
-                            <option value="">All Platforms</option>
+                            <option value="">{{ __('all_platforms') }}</option>
                             @foreach($platforms as $p)
                                 <option value="{{ $p }}" {{ request('platform') == $p ? 'selected' : '' }}>{{ $p }}</option>
                             @endforeach
                         </select>
                     </div>
                     <div class="col-md-2">
-                        <label class="form-label text-muted small">Tag</label>
+                        <label class="form-label text-muted small">{{ __('tags_label') }}</label>
                         <select name="tag" class="form-select form-select-dark">
-                            <option value="">All Tags</option>
+                            <option value="">{{ __('all_tags') }}</option>
                             @foreach($tags as $tag)
                                 <option value="{{ $tag->slug }}" {{ request('tag') == $tag->slug ? 'selected' : '' }}>{{ $tag->name }}</option>
                             @endforeach
@@ -54,7 +54,7 @@
                 </div>
                 @if(request()->hasAny(['search','category','platform','tag']))
                     <div class="mt-3">
-                        <a href="{{ route('prompts.index') }}" class="btn btn-sm btn-outline-secondary"><i class="bi bi-x me-1"></i>Clear Filters</a>
+                        <a href="{{ route('prompts.index') }}" class="btn btn-sm btn-outline-secondary"><i class="bi bi-x me-1"></i>{{ __('clear_filters') }}</a>
                     </div>
                 @endif
             </form>
@@ -97,7 +97,7 @@
                                 @else
                                     <span></span>
                                 @endif
-                                <a href="{{ route('prompts.show', $prompt) }}" class="btn btn-gradient btn-sm">View</a>
+                                <a href="{{ route('prompts.show', $prompt) }}" class="btn btn-gradient btn-sm">{{ __('view') }}</a>
                             </div>
                         </div>
                     </div>
@@ -111,9 +111,9 @@
         @else
             <div class="text-center py-5">
                 <i class="bi bi-search fs-1 mb-3" style="color:#334155"></i>
-                <h4 class="text-muted">No prompts found</h4>
-                <p class="text-muted small">Try adjusting your search or filters.</p>
-                <a href="{{ route('prompts.index') }}" class="btn btn-gradient mt-2">Clear Filters</a>
+                <h4 class="text-muted">{{ __('no_prompts') }}</h4>
+                <p class="text-muted small">{{ __('no_prompts_hint') }}</p>
+                <a href="{{ route('prompts.index') }}" class="btn btn-gradient mt-2">{{ __('clear_filters') }}</a>
             </div>
         @endif
     </div>

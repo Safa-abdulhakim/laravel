@@ -1,18 +1,18 @@
 @extends('layouts.dashboard')
-@section('title', 'Admin Dashboard')
-@section('page-title', 'Admin Dashboard')
+@section('title', __('admin_dashboard_title'))
+@section('page-title', __('admin_dashboard_title'))
 @section('content')
 
 {{-- Stats Row --}}
 <div class="row g-3 mb-4">
     @php
     $statCards = [
-        ['label'=>'Total Users',    'value'=>$stats['total_users'],    'icon'=>'people-fill',     'color'=>'#7c3aed','bg'=>'rgba(124,58,237,0.15)'],
-        ['label'=>'Total Prompts',  'value'=>$stats['total_prompts'],  'icon'=>'collection-fill', 'color'=>'#06b6d4','bg'=>'rgba(6,182,212,0.15)'],
-        ['label'=>'Public Prompts', 'value'=>$stats['public_prompts'], 'icon'=>'globe',           'color'=>'#10b981','bg'=>'rgba(16,185,129,0.15)'],
-        ['label'=>'Categories',     'value'=>$stats['total_categories'],'icon'=>'folder-fill',   'color'=>'#f59e0b','bg'=>'rgba(245,158,11,0.15)'],
-        ['label'=>'Tags',           'value'=>$stats['total_tags'],     'icon'=>'tags-fill',       'color'=>'#ec4899','bg'=>'rgba(236,72,153,0.15)'],
-        ['label'=>'Total Views',    'value'=>$stats['total_views'],    'icon'=>'eye-fill',        'color'=>'#a78bfa','bg'=>'rgba(167,139,250,0.15)'],
+        ['label'=>__('total_users_stat'),    'value'=>$stats['total_users'],    'icon'=>'people-fill',     'color'=>'#7c3aed','bg'=>'rgba(124,58,237,0.15)'],
+        ['label'=>__('total_prompts'),  'value'=>$stats['total_prompts'],  'icon'=>'collection-fill', 'color'=>'#06b6d4','bg'=>'rgba(6,182,212,0.15)'],
+        ['label'=>__('public_prompts_stat'), 'value'=>$stats['public_prompts'], 'icon'=>'globe',           'color'=>'#10b981','bg'=>'rgba(16,185,129,0.15)'],
+        ['label'=>__('total_categories_stat'),     'value'=>$stats['total_categories'],'icon'=>'folder-fill',   'color'=>'#f59e0b','bg'=>'rgba(245,158,11,0.15)'],
+        ['label'=>__('total_tags_stat'),           'value'=>$stats['total_tags'],     'icon'=>'tags-fill',       'color'=>'#ec4899','bg'=>'rgba(236,72,153,0.15)'],
+        ['label'=>__('total_views_admin'),    'value'=>$stats['total_views'],    'icon'=>'eye-fill',        'color'=>'#a78bfa','bg'=>'rgba(167,139,250,0.15)'],
     ];
     @endphp
     @foreach($statCards as $stat)
@@ -31,10 +31,10 @@
 {{-- Quick Links --}}
 <div class="row g-3 mb-4">
     @foreach([
-        ['route'=>'admin.prompts.index',    'label'=>'Manage Prompts',    'icon'=>'collection',   'color'=>'#06b6d4'],
-        ['route'=>'admin.categories.index', 'label'=>'Manage Categories', 'icon'=>'folder2',      'color'=>'#f59e0b'],
-        ['route'=>'admin.tags.index',       'label'=>'Manage Tags',       'icon'=>'tags',         'color'=>'#ec4899'],
-        ['route'=>'admin.users.index',      'label'=>'Manage Users',      'icon'=>'people',       'color'=>'#10b981'],
+        ['route'=>'admin.prompts.index',    'label'=>__('manage_prompts'),    'icon'=>'collection',   'color'=>'#06b6d4'],
+        ['route'=>'admin.categories.index', 'label'=>__('manage_categories'), 'icon'=>'folder2',      'color'=>'#f59e0b'],
+        ['route'=>'admin.tags.index',       'label'=>__('manage_tags'),       'icon'=>'tags',         'color'=>'#ec4899'],
+        ['route'=>'admin.users.index',      'label'=>__('manage_users'),      'icon'=>'people',       'color'=>'#10b981'],
     ] as $link)
     <div class="col-6 col-md-3">
         <a href="{{ route($link['route']) }}" class="text-decoration-none">
@@ -52,14 +52,14 @@
     <div class="col-lg-8">
         <div class="card-dark p-4">
             <div class="d-flex justify-content-between align-items-center mb-4">
-                <h5 class="fw-bold text-white mb-0">Recent Prompts</h5>
-                <a href="{{ route('admin.prompts.index') }}" class="btn btn-sm btn-gradient">View All</a>
+                <h5 class="fw-bold text-white mb-0">{{ __('recent_prompts_admin') }}</h5>
+                <a href="{{ route('admin.prompts.index') }}" class="btn btn-sm btn-gradient">{{ __('view_all') }}</a>
             </div>
             <div class="table-responsive">
                 <table class="table table-dark-custom mb-0">
                     <thead>
                         <tr>
-                            <th>Title</th><th>User</th><th>Platform</th><th>Status</th><th>Views</th>
+                            <th>{{ __('title_label') }}</th><th>{{ __('user_col') }}</th><th>{{ __('platform_label') }}</th><th>{{ __('status') }}</th><th>{{ __('views') }}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -90,19 +90,19 @@
     <div class="col-lg-4">
         {{-- Platform Chart --}}
         <div class="card-dark p-4 mb-4">
-            <h5 class="fw-bold text-white mb-4">Platform Distribution</h5>
+            <h5 class="fw-bold text-white mb-4">{{ __('platform_chart') }}</h5>
             @if($platformData->count())
                 <canvas id="platformChart" height="220"></canvas>
             @else
-                <p class="text-muted text-center py-4">No data yet</p>
+                <p class="text-muted text-center py-4">{{ __('no_results') }}</p>
             @endif
         </div>
 
         {{-- Recent Users --}}
         <div class="card-dark p-4">
             <div class="d-flex justify-content-between align-items-center mb-3">
-                <h6 class="fw-semibold text-white mb-0">Recent Users</h6>
-                <a href="{{ route('admin.users.index') }}" class="btn btn-sm" style="font-size:0.75rem;color:#a78bfa;background:rgba(124,58,237,0.1);border:none;border-radius:8px;padding:4px 10px;">View All</a>
+                <h6 class="fw-semibold text-white mb-0">{{ __('recent_users') }}</h6>
+                <a href="{{ route('admin.users.index') }}" class="btn btn-sm" style="font-size:0.75rem;color:#a78bfa;background:rgba(124,58,237,0.1);border:none;border-radius:8px;padding:4px 10px;">{{ __('view_all') }}</a>
             </div>
             @foreach($recentUsers as $user)
             <div class="d-flex align-items-center gap-3 mb-3">
@@ -115,7 +115,7 @@
                     <p class="text-muted mb-0" style="font-size:0.7rem">{{ $user->email }}</p>
                 </div>
                 @if($user->role === 'admin')
-                    <span class="badge flex-shrink-0" style="background:rgba(245,158,11,0.15);color:#f59e0b;border:1px solid rgba(245,158,11,0.3);font-size:0.65rem">Admin</span>
+                    <span class="badge flex-shrink-0" style="background:rgba(245,158,11,0.15);color:#f59e0b;border:1px solid rgba(245,158,11,0.3);font-size:0.65rem">{{ __('admin_badge') }}</span>
                 @endif
             </div>
             @endforeach

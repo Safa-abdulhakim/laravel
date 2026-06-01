@@ -45,7 +45,7 @@ class AdminPromptController extends Controller
             ['user_id' => auth()->id(), 'favorite' => $request->boolean('favorite')]
         ));
         if ($request->tags) $prompt->tags()->sync($request->tags);
-        return redirect()->route('admin.prompts.index')->with('success', 'Prompt created!');
+        return redirect()->route('admin.prompts.index')->with('success', __('success_prompt_created'));
     }
 
     public function edit(Prompt $prompt)
@@ -64,12 +64,12 @@ class AdminPromptController extends Controller
             ['favorite' => $request->boolean('favorite')]
         ));
         $prompt->tags()->sync($request->tags ?? []);
-        return redirect()->route('admin.prompts.index')->with('success', 'Prompt updated!');
+        return redirect()->route('admin.prompts.index')->with('success', __('success_prompt_updated'));
     }
 
     public function destroy(Prompt $prompt)
     {
         $prompt->delete();
-        return redirect()->route('admin.prompts.index')->with('success', 'Prompt deleted!');
+        return redirect()->route('admin.prompts.index')->with('success', __('success_prompt_deleted'));
     }
 }
