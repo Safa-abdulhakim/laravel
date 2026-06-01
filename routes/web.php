@@ -12,6 +12,18 @@ use App\Http\Controllers\Admin\CvController;
 use Illuminate\Support\Facades\Route;
 
 // ===========================
+// LANGUAGE SWITCH
+// ===========================
+Route::get('/lang/{locale}', function (string $locale) {
+    if (in_array($locale, ['en', 'ar'])) {
+        session(['locale' => $locale]);
+    }
+    return redirect()->back()->withHeaders([
+        'Cache-Control' => 'no-store, no-cache',
+    ]);
+})->name('lang.switch');
+
+// ===========================
 // PUBLIC PORTFOLIO ROUTES
 // ===========================
 Route::get('/', [PortfolioController::class, 'index'])->name('home');

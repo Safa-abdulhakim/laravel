@@ -1,5 +1,5 @@
 @extends('layouts.portfolio')
-@section('title', 'Home')
+@section('title', __('portfolio.nav_about'))
 
 @section('content')
 
@@ -10,40 +10,39 @@
             <div class="col-lg-7">
                 <div class="hero-badge">
                     <i class="bi bi-circle-fill me-2" style="font-size:.5rem;color:#10b981;"></i>
-                    Available for Hire
+                    {{ __('portfolio.hero_available') }}
                 </div>
                 <h1 class="hero-title">
-                    Hi, I'm <span class="highlight">John</span><br>
+                    {{ __('portfolio.hero_greeting') }} <span class="highlight">John</span><br>
                     <span class="typing-text" id="typingText">Full Stack Developer</span>
                 </h1>
                 <p class="hero-subtitle mt-3 mb-4">
-                    I build scalable, high-performance web applications using <strong style="color:#818cf8;">Laravel</strong>,
-                    <strong style="color:#818cf8;">Vue.js</strong>, and modern web technologies. Passionate about clean code and great UX.
+                    {!! __('portfolio.hero_subtitle') !!}
                 </p>
                 <div class="d-flex flex-wrap gap-3 mb-4">
                     <a href="{{ route('projects') }}" class="btn-hero-primary">
-                        <i class="bi bi-grid-3x3-gap me-2"></i>View My Work
+                        <i class="bi bi-grid-3x3-gap me-2"></i>{{ __('portfolio.hero_view_work') }}
                     </a>
                     <a href="{{ route('contact') }}" class="btn-hero-outline">
-                        <i class="bi bi-envelope me-2"></i>Get In Touch
+                        <i class="bi bi-envelope me-2"></i>{{ __('portfolio.hero_get_touch') }}
                     </a>
                 </div>
                 <div class="hero-stats d-flex flex-wrap gap-5">
                     <div>
                         <div class="hero-stat-num">{{ $featuredProjects->count() }}+</div>
-                        <div class="hero-stat-label">Projects</div>
+                        <div class="hero-stat-label">{{ __('portfolio.hero_projects') }}</div>
                     </div>
                     <div>
                         <div class="hero-stat-num">{{ $skills->count() }}+</div>
-                        <div class="hero-stat-label">Skills</div>
+                        <div class="hero-stat-label">{{ __('portfolio.hero_skills') }}</div>
                     </div>
                     <div>
                         <div class="hero-stat-num">{{ $experiences->count() }}+</div>
-                        <div class="hero-stat-label">Experiences</div>
+                        <div class="hero-stat-label">{{ __('portfolio.hero_experiences') }}</div>
                     </div>
                     <div>
                         <div class="hero-stat-num">{{ $certificates->count() }}+</div>
-                        <div class="hero-stat-label">Certificates</div>
+                        <div class="hero-stat-label">{{ __('portfolio.hero_certificates') }}</div>
                     </div>
                 </div>
             </div>
@@ -77,47 +76,45 @@
             </div>
             <div class="col-lg-7 fade-up">
                 <div class="section-header">
-                    <span class="section-badge">About Me</span>
-                    <h2 class="section-title">Passionate Developer &<br>Problem Solver</h2>
+                    <span class="section-badge">{{ __('portfolio.about_badge') }}</span>
+                    <h2 class="section-title">{{ __('portfolio.about_title') }}</h2>
                     <div class="section-line"></div>
                 </div>
                 <p class="text-muted mb-3" style="font-size:1.05rem;line-height:1.8;">
-                    I'm a Full Stack Laravel Developer with 5+ years of experience building robust web applications.
-                    I specialize in PHP/Laravel for the backend and Vue.js/Bootstrap for the frontend.
+                    {{ __('portfolio.about_p1') }}
                 </p>
                 <p class="text-muted mb-4" style="line-height:1.8;">
-                    I'm passionate about writing clean, maintainable code and following best practices. I enjoy
-                    solving complex problems and turning ideas into functional, beautiful products.
+                    {{ __('portfolio.about_p2') }}
                 </p>
                 <div class="row g-3 mb-4">
                     <div class="col-6">
-                        <div class="p-3 rounded-3" style="background:#f8fafc;border-left:3px solid #6366f1;">
+                        <div class="p-3 rounded-3" style="background:#f8fafc;border-{{ app()->getLocale()=='ar'?'right':'left' }}:3px solid #6366f1;">
                             <i class="bi bi-geo-alt text-primary me-2"></i>
-                            <span class="small fw-medium">New York, USA</span>
+                            <span class="small fw-medium">{{ __('portfolio.about_location') }}</span>
                         </div>
                     </div>
                     <div class="col-6">
-                        <div class="p-3 rounded-3" style="background:#f8fafc;border-left:3px solid #10b981;">
+                        <div class="p-3 rounded-3" style="background:#f8fafc;border-{{ app()->getLocale()=='ar'?'right':'left' }}:3px solid #10b981;">
                             <i class="bi bi-envelope text-success me-2"></i>
-                            <span class="small fw-medium">john@example.com</span>
+                            <span class="small fw-medium">{{ __('portfolio.about_email') }}</span>
                         </div>
                     </div>
                     <div class="col-6">
-                        <div class="p-3 rounded-3" style="background:#f8fafc;border-left:3px solid #f59e0b;">
+                        <div class="p-3 rounded-3" style="background:#f8fafc;border-{{ app()->getLocale()=='ar'?'right':'left' }}:3px solid #f59e0b;">
                             <i class="bi bi-briefcase text-warning me-2"></i>
-                            <span class="small fw-medium">5+ Years Exp.</span>
+                            <span class="small fw-medium">{{ __('portfolio.about_exp') }}</span>
                         </div>
                     </div>
                     <div class="col-6">
-                        <div class="p-3 rounded-3" style="background:#f8fafc;border-left:3px solid #ef4444;">
+                        <div class="p-3 rounded-3" style="background:#f8fafc;border-{{ app()->getLocale()=='ar'?'right':'left' }}:3px solid #ef4444;">
                             <i class="bi bi-mortarboard text-danger me-2"></i>
-                            <span class="small fw-medium">CS Graduate</span>
+                            <span class="small fw-medium">{{ __('portfolio.about_edu') }}</span>
                         </div>
                     </div>
                 </div>
                 @if($activeCv)
                 <a href="{{ route('cv.download') }}" class="btn btn-primary rounded-pill px-4">
-                    <i class="bi bi-download me-2"></i>Download CV
+                    <i class="bi bi-download me-2"></i>{{ __('portfolio.about_download_cv') }}
                 </a>
                 @endif
             </div>
@@ -129,10 +126,10 @@
 <section id="projects">
     <div class="container">
         <div class="text-center section-header fade-up">
-            <span class="section-badge">Portfolio</span>
-            <h2 class="section-title">Featured Projects</h2>
+            <span class="section-badge">{{ __('portfolio.projects_badge') }}</span>
+            <h2 class="section-title">{{ __('portfolio.projects_title') }}</h2>
             <div class="section-line mx-auto"></div>
-            <p class="text-muted mt-3">A selection of my recent work</p>
+            <p class="text-muted mt-3">{{ __('portfolio.projects_sub') }}</p>
         </div>
         <div class="row g-4">
             @forelse($featuredProjects as $project)
@@ -164,13 +161,13 @@
                             @if($project->github_link)
                                 <a href="{{ $project->github_link }}" target="_blank"
                                    class="btn btn-sm btn-outline-dark rounded-pill">
-                                    <i class="bi bi-github me-1"></i>Code
+                                    <i class="bi bi-github me-1"></i>{{ __('portfolio.projects_code') }}
                                 </a>
                             @endif
                             @if($project->live_demo)
                                 <a href="{{ $project->live_demo }}" target="_blank"
                                    class="btn btn-sm btn-primary rounded-pill">
-                                    <i class="bi bi-box-arrow-up-right me-1"></i>Demo
+                                    <i class="bi bi-box-arrow-up-right me-1"></i>{{ __('portfolio.projects_demo') }}
                                 </a>
                             @endif
                         </div>
@@ -178,12 +175,12 @@
                 </div>
             </div>
             @empty
-            <div class="col-12 text-center py-5 text-muted">No projects yet.</div>
+            <div class="col-12 text-center py-5 text-muted">{{ __('portfolio.projects_none') }}</div>
             @endforelse
         </div>
         <div class="text-center mt-5 fade-up">
             <a href="{{ route('projects') }}" class="btn btn-outline-primary rounded-pill px-5 py-2">
-                View All Projects <i class="bi bi-arrow-right ms-2"></i>
+                {{ __('portfolio.projects_view_all') }} <i class="bi bi-arrow-{{ app()->getLocale()=='ar'?'left':'right' }} ms-2"></i>
             </a>
         </div>
     </div>
@@ -193,27 +190,24 @@
 <section id="skills">
     <div class="container">
         <div class="text-center section-header fade-up">
-            <span class="section-badge">Expertise</span>
-            <h2 class="section-title">Skills & Technologies</h2>
+            <span class="section-badge">{{ __('portfolio.skills_badge') }}</span>
+            <h2 class="section-title">{{ __('portfolio.skills_title') }}</h2>
             <div class="section-line mx-auto" style="background:#818cf8;"></div>
         </div>
-
-        {{-- Category Filter --}}
         <div class="d-flex justify-content-center flex-wrap gap-2 mb-5">
             <button class="skill-category-badge active text-white-50" onclick="filterSkills('all', this)">
-                <i class="bi bi-grid"></i> All
+                <i class="bi bi-grid"></i> {{ __('portfolio.skills_all') }}
             </button>
             <button class="skill-category-badge text-white-50" onclick="filterSkills('frontend', this)">
-                <i class="bi bi-layout-text-window"></i> Frontend
+                <i class="bi bi-layout-text-window"></i> {{ __('portfolio.skills_frontend') }}
             </button>
             <button class="skill-category-badge text-white-50" onclick="filterSkills('backend', this)">
-                <i class="bi bi-server"></i> Backend
+                <i class="bi bi-server"></i> {{ __('portfolio.skills_backend') }}
             </button>
             <button class="skill-category-badge text-white-50" onclick="filterSkills('tools', this)">
-                <i class="bi bi-tools"></i> Tools
+                <i class="bi bi-tools"></i> {{ __('portfolio.skills_tools') }}
             </button>
         </div>
-
         <div class="row g-4" id="skillsGrid">
             @foreach($skillsByCategory as $category => $catSkills)
             <div class="col-lg-4 skill-group" data-category="{{ $category }}">
@@ -224,7 +218,7 @@
                         @elseif($category === 'tools') <i class="bi bi-tools text-warning"></i>
                         @else <i class="bi bi-star text-info"></i>
                         @endif
-                        {{ ucfirst($category) }}
+                        {{ __('portfolio.skills_'.$category, [], null) ?: ucfirst($category) }}
                     </h6>
                     @foreach($catSkills as $skill)
                     <div class="skill-bar-wrap">
@@ -234,10 +228,7 @@
                         </div>
                         <div class="progress-dark">
                             <div class="progress-bar" role="progressbar"
-                                 style="width:0%"
-                                 data-width="{{ $skill->percentage }}"
-                                 aria-valuenow="{{ $skill->percentage }}"
-                                 aria-valuemin="0" aria-valuemax="100">
+                                 style="width:0%" data-width="{{ $skill->percentage }}">
                             </div>
                         </div>
                     </div>
@@ -253,8 +244,8 @@
 <section id="experience">
     <div class="container">
         <div class="text-center section-header fade-up">
-            <span class="section-badge">Career</span>
-            <h2 class="section-title">Work Experience</h2>
+            <span class="section-badge">{{ __('portfolio.exp_badge') }}</span>
+            <h2 class="section-title">{{ __('portfolio.exp_title') }}</h2>
             <div class="section-line mx-auto"></div>
         </div>
         <div class="row justify-content-center">
@@ -271,14 +262,14 @@
                                 </div>
                                 @if($exp->is_current)
                                     <span class="badge rounded-pill px-3" style="background:#d1fae5;color:#065f46;">
-                                        <i class="bi bi-circle-fill me-1" style="font-size:.5rem;"></i>Current
+                                        <i class="bi bi-circle-fill me-1" style="font-size:.5rem;"></i>{{ __('portfolio.exp_current') }}
                                     </span>
                                 @endif
                             </div>
                             <div class="d-flex flex-wrap gap-3 text-muted small mb-3">
                                 <span><i class="bi bi-calendar3 me-1"></i>
                                     {{ $exp->start_date->format('M Y') }} —
-                                    {{ $exp->is_current ? 'Present' : $exp->end_date->format('M Y') }}
+                                    {{ $exp->is_current ? __('portfolio.exp_present') : $exp->end_date->format('M Y') }}
                                 </span>
                                 @if($exp->location)
                                     <span><i class="bi bi-geo-alt me-1"></i>{{ $exp->location }}</span>
@@ -290,7 +281,7 @@
                         </div>
                     </div>
                     @empty
-                    <div class="text-center text-muted py-5">No experience listed yet.</div>
+                    <div class="text-center text-muted py-5">{{ __('portfolio.exp_none') }}</div>
                     @endforelse
                 </div>
             </div>
@@ -302,8 +293,8 @@
 <section id="certificates">
     <div class="container">
         <div class="text-center section-header fade-up">
-            <span class="section-badge">Achievements</span>
-            <h2 class="section-title">Certificates</h2>
+            <span class="section-badge">{{ __('portfolio.cert_badge') }}</span>
+            <h2 class="section-title">{{ __('portfolio.cert_title') }}</h2>
             <div class="section-line mx-auto"></div>
         </div>
         <div class="row g-4">
@@ -327,14 +318,14 @@
                         @if($cert->credential_url)
                             <a href="{{ $cert->credential_url }}" target="_blank"
                                class="btn btn-sm btn-outline-primary rounded-pill">
-                                <i class="bi bi-patch-check me-1"></i>Verify
+                                <i class="bi bi-patch-check me-1"></i>{{ __('portfolio.cert_verify') }}
                             </a>
                         @endif
                     </div>
                 </div>
             </div>
             @empty
-            <div class="col-12 text-center text-muted py-5">No certificates listed yet.</div>
+            <div class="col-12 text-center text-muted py-5">{{ __('portfolio.cert_none') }}</div>
             @endforelse
         </div>
     </div>
@@ -344,13 +335,13 @@
 <section style="background:linear-gradient(135deg,#0f172a,#1e1b4b);padding:5rem 0;">
     <div class="container text-center">
         <div class="fade-up">
-            <span class="section-badge" style="background:rgba(99,102,241,.15);color:#818cf8;">Contact</span>
-            <h2 class="section-title mt-2" style="color:#fff;">Let's Work Together</h2>
+            <span class="section-badge" style="background:rgba(99,102,241,.15);color:#818cf8;">{{ __('portfolio.cta_badge') }}</span>
+            <h2 class="section-title mt-2" style="color:#fff;">{{ __('portfolio.cta_title') }}</h2>
             <p class="text-white-50 mb-4" style="max-width:500px;margin:0 auto 2rem;">
-                Have a project in mind? I'd love to hear about it. Let's talk.
+                {{ __('portfolio.cta_sub') }}
             </p>
             <a href="{{ route('contact') }}" class="btn-hero-primary">
-                <i class="bi bi-send me-2"></i>Send Me a Message
+                <i class="bi bi-send me-2"></i>{{ __('portfolio.cta_btn') }}
             </a>
         </div>
     </div>

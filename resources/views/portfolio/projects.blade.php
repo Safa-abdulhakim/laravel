@@ -1,12 +1,12 @@
 @extends('layouts.portfolio')
-@section('title', 'All Projects')
+@section('title', __('portfolio.projects_page_title'))
 
 @section('content')
 <div style="padding-top:76px;background:linear-gradient(135deg,#0f172a,#1e1b4b);">
     <div class="container py-5 text-center">
-        <span class="section-badge" style="background:rgba(99,102,241,.15);color:#818cf8;">My Work</span>
-        <h1 class="section-title mt-2" style="color:#fff;">All Projects</h1>
-        <p class="text-white-50">A complete showcase of my work</p>
+        <span class="section-badge" style="background:rgba(99,102,241,.15);color:#818cf8;">{{ __('portfolio.my_work') }}</span>
+        <h1 class="section-title mt-2" style="color:#fff;">{{ __('portfolio.projects_page_title') }}</h1>
+        <p class="text-white-50">{{ __('portfolio.projects_page_sub') }}</p>
     </div>
 </div>
 
@@ -42,13 +42,13 @@
                             @if($project->github_link)
                                 <a href="{{ $project->github_link }}" target="_blank"
                                    class="btn btn-sm btn-outline-dark rounded-pill">
-                                    <i class="bi bi-github me-1"></i>Code
+                                    <i class="bi bi-github me-1"></i>{{ __('portfolio.projects_code') }}
                                 </a>
                             @endif
                             @if($project->live_demo)
                                 <a href="{{ $project->live_demo }}" target="_blank"
                                    class="btn btn-sm btn-primary rounded-pill">
-                                    <i class="bi bi-box-arrow-up-right me-1"></i>Demo
+                                    <i class="bi bi-box-arrow-up-right me-1"></i>{{ __('portfolio.projects_demo') }}
                                 </a>
                             @endif
                         </div>
@@ -58,7 +58,7 @@
             @empty
             <div class="col-12 text-center py-5 text-muted">
                 <i class="bi bi-folder-x fs-1 d-block mb-3"></i>
-                No projects found.
+                {{ __('portfolio.projects_none') }}
             </div>
             @endforelse
         </div>

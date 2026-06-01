@@ -1,5 +1,6 @@
+@php $isAr = app()->getLocale() === 'ar'; @endphp
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ app()->getLocale() }}" dir="{{ $isAr ? 'rtl' : 'ltr' }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,12 +8,19 @@
     <title>@yield('title', 'Portfolio') — John Developer</title>
     <meta name="description" content="@yield('meta-description', 'Full Stack Laravel Developer — Portfolio')">
 
-    <!-- Bootstrap 5 -->
+    <!-- Bootstrap 5 (RTL/LTR) -->
+    @if($isAr)
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
+    @else
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    @endif
     <!-- Bootstrap Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    @if($isAr)
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+    @endif
 
     <style>
         :root {
@@ -22,7 +30,33 @@
             --dark: #0f172a;
             --text: #334155;
         }
-        * { font-family: 'Inter', sans-serif; }
+        * { font-family: {{ $isAr ? "'Tajawal'" : "'Inter'" }}, sans-serif; }
+        [dir="rtl"] .ms-auto { margin-left: unset !important; margin-right: auto !important; }
+        [dir="rtl"] .me-1 { margin-right: unset !important; margin-left: .25rem !important; }
+        [dir="rtl"] .me-2 { margin-right: unset !important; margin-left: .5rem !important; }
+        [dir="rtl"] .me-3 { margin-right: unset !important; margin-left: 1rem !important; }
+        [dir="rtl"] .text-md-end { text-align: left !important; }
+        [dir="rtl"] .timeline::before { left: unset; right: 20px; }
+        [dir="rtl"] .timeline-item { padding-left: 0; padding-right: 60px; }
+        [dir="rtl"] .timeline-dot { left: unset; right: 10px; }
+        /* Language toggle */
+        .lang-btn {
+            background: rgba(255,255,255,.1);
+            border: 1px solid rgba(255,255,255,.2);
+            color: rgba(255,255,255,.8);
+            border-radius: 99px;
+            padding: .3rem .85rem;
+            font-size: .8rem;
+            font-weight: 700;
+            letter-spacing: .04em;
+            cursor: pointer;
+            transition: all .2s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: .35rem;
+        }
+        .lang-btn:hover { background: var(--primary); border-color: var(--primary); color: #fff; }
         html { scroll-behavior: smooth; }
         body { color: var(--text); }
 
@@ -237,17 +271,29 @@
             <span style="color:#fff;font-size:1.4rem;"><i class="bi bi-list"></i></span>
         </button>
         <div class="collapse navbar-collapse" id="navMenu">
-            <ul class="navbar-nav ms-auto gap-1">
-                <li class="nav-item"><a class="nav-link text-white-50" href="{{ route('home') }}#about">About</a></li>
-                <li class="nav-item"><a class="nav-link text-white-50" href="{{ route('home') }}#projects">Projects</a></li>
-                <li class="nav-item"><a class="nav-link text-white-50" href="{{ route('home') }}#skills">Skills</a></li>
-                <li class="nav-item"><a class="nav-link text-white-50" href="{{ route('home') }}#experience">Experience</a></li>
-                <li class="nav-item"><a class="nav-link text-white-50" href="{{ route('home') }}#certificates">Certificates</a></li>
-                <li class="nav-item"><a class="nav-link text-white-50" href="{{ route('contact') }}">Contact</a></li>
+            <ul class="navbar-nav ms-auto gap-1 align-items-center">
+                <li class="nav-item"><a class="nav-link text-white-50" href="{{ route('home') }}#about">{{ __('portfolio.nav_about') }}</a></li>
+                <li class="nav-item"><a class="nav-link text-white-50" href="{{ route('home') }}#projects">{{ __('portfolio.nav_projects') }}</a></li>
+                <li class="nav-item"><a class="nav-link text-white-50" href="{{ route('home') }}#skills">{{ __('portfolio.nav_skills') }}</a></li>
+                <li class="nav-item"><a class="nav-link text-white-50" href="{{ route('home') }}#experience">{{ __('portfolio.nav_experience') }}</a></li>
+                <li class="nav-item"><a class="nav-link text-white-50" href="{{ route('home') }}#certificates">{{ __('portfolio.nav_certificates') }}</a></li>
+                <li class="nav-item"><a class="nav-link text-white-50" href="{{ route('contact') }}">{{ __('portfolio.nav_contact') }}</a></li>
                 <li class="nav-item ms-2">
                     <a href="{{ route('cv.download') }}" class="btn btn-sm btn-primary rounded-pill px-3">
-                        <i class="bi bi-download me-1"></i>CV
+                        <i class="bi bi-download me-1"></i>{{ __('portfolio.nav_cv') }}
                     </a>
+                </li>
+                {{-- Language Switcher --}}
+                <li class="nav-item ms-1">
+                    @if($isAr)
+                        <a href="{{ route('lang.switch', 'en') }}" class="lang-btn">
+                            🇺🇸 EN
+                        </a>
+                    @else
+                        <a href="{{ route('lang.switch', 'ar') }}" class="lang-btn">
+                            🇸🇦 عربي
+                        </a>
+                    @endif
                 </li>
             </ul>
         </div>
@@ -264,20 +310,20 @@
                 <div class="fw-bold text-white mb-1">
                     <span style="color:var(--primary)">&lt;</span>JohnDev<span style="color:var(--primary)">/&gt;</span>
                 </div>
-                <small>Full Stack Laravel Developer</small>
+                <small>{{ __('portfolio.footer_role') }}</small>
             </div>
             <div class="col-md-6 text-md-end">
                 <div class="d-flex justify-content-md-end gap-3 mb-2">
-                    <a href="{{ route('home') }}#about">About</a>
-                    <a href="{{ route('projects') }}">Projects</a>
-                    <a href="{{ route('contact') }}">Contact</a>
+                    <a href="{{ route('home') }}#about">{{ __('portfolio.footer_about') }}</a>
+                    <a href="{{ route('projects') }}">{{ __('portfolio.footer_projects') }}</a>
+                    <a href="{{ route('contact') }}">{{ __('portfolio.footer_contact') }}</a>
                     @auth
-                        <a href="{{ route('admin.dashboard') }}" class="text-primary">Admin</a>
+                        <a href="{{ route('admin.dashboard') }}" class="text-primary">{{ __('portfolio.footer_admin') }}</a>
                     @else
-                        <a href="{{ route('login') }}">Login</a>
+                        <a href="{{ route('login') }}">{{ __('portfolio.footer_login') }}</a>
                     @endauth
                 </div>
-                <small>© {{ date('Y') }} John Developer. Built with Laravel 11.</small>
+                <small>{{ __('portfolio.footer_copy', ['year' => date('Y')]) }}</small>
             </div>
         </div>
     </div>
