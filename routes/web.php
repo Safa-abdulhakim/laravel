@@ -8,6 +8,14 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProgressController;
 use Illuminate\Support\Facades\Route;
 
+// Language switcher
+Route::post('/lang/{locale}', function (string $locale) {
+    if (in_array($locale, ['ar', 'en'])) {
+        session(['locale' => $locale]);
+    }
+    return back();
+})->name('lang.switch');
+
 // Public routes
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/about', [HomeController::class, 'about'])->name('about');
