@@ -1,0 +1,98 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Smooth scrolling */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Focus styles */
+input:focus,
+textarea:focus,
+select:focus {
+    outline: none;
+    border-color: var(--color-accent) !important;
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+::-webkit-scrollbar-track {
+    background: var(--color-bg);
+}
+::-webkit-scrollbar-thumb {
+    background: var(--color-border);
+    border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: var(--color-muted);
+}
+
+/* Pagination styling */
+nav[aria-label="Pagination"] {
+    display: flex;
+    justify-content: center;
+}
+nav[aria-label="Pagination"] span,
+nav[aria-label="Pagination"] a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 2.25rem;
+    height: 2.25rem;
+    padding: 0 0.75rem;
+    margin: 0 0.125rem;
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    border: 1px solid var(--color-border);
+    color: var(--color-muted);
+    background: var(--color-card);
+    transition: all 0.2s;
+    text-decoration: none;
+}
+nav[aria-label="Pagination"] a:hover {
+    background: rgba(79, 70, 229, 0.1);
+    color: var(--color-accent);
+    border-color: var(--color-accent);
+}
+nav[aria-label="Pagination"] span[aria-current="page"] span,
+nav[aria-label="Pagination"] span.font-bold {
+    background: linear-gradient(135deg, var(--color-accent), var(--color-secondary));
+    color: white;
+    border-color: transparent;
+}
+
+/* Hover text color */
+.hover\:text-accent:hover {
+    color: var(--color-accent);
+}
+
+/* Table divider */
+tbody tr + tr td {
+    border-top: 1px solid var(--color-border);
+}
+
+/* RTL adjustments */
+[dir="rtl"] .ms-auto {
+    margin-inline-start: auto;
+}
+[dir="rtl"] .me-2 {
+    margin-inline-end: 0.5rem;
+}
+[dir="rtl"] .ms-2 {
+    margin-inline-start: 0.5rem;
+}
+
+/* Alpine.js cloak */
+[x-cloak] { display: none !important; }
+
+/* Selection color */
+::selection {
+    background: rgba(79, 70, 229, 0.2);
+    color: var(--color-heading);
+}
