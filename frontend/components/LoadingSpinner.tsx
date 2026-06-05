@@ -1,54 +1,100 @@
 "use client";
 
+/* ────────────────────────────────────────────────────────────
+   Types
+   ──────────────────────────────────────────────────────────── */
 interface LoadingSpinnerProps {
+  /** Visual size of the spinner */
   size?: "sm" | "md" | "lg" | "xl";
+  /** Color theme */
   color?: "white" | "brand" | "teal";
+  /** Additional Tailwind classes */
   className?: string;
 }
 
-const sizeMap = {
+/* ────────────────────────────────────────────────────────────
+   Maps
+   ──────────────────────────────────────────────────────────── */
+const sizeMap: Record<NonNullable<LoadingSpinnerProps["size"]>, string> = {
   sm: "w-4 h-4 border-2",
-  md: "w-8 h-8 border-3",
-  lg: "w-12 h-12 border-4",
+  md: "w-7 h-7 border-[3px]",
+  lg: "w-12 h-12 border-[3px]",
   xl: "w-16 h-16 border-4",
 };
 
-const colorMap = {
+const colorMap: Record<NonNullable<LoadingSpinnerProps["color"]>, string> = {
   white: "border-white/30 border-t-white",
   brand: "border-brand-200 border-t-brand-700",
   teal: "border-teal-200 border-t-teal-600",
 };
 
+/* ────────────────────────────────────────────────────────────
+   Spinner (default export)
+   ──────────────────────────────────────────────────────────── */
 export default function LoadingSpinner({
   size = "md",
   color = "teal",
   className = "",
 }: LoadingSpinnerProps) {
   return (
-    <div
+    <span
       role="status"
       aria-label="جاري التحميل"
       className={`
-        inline-block
-        rounded-full
-        animate-spin
+        inline-block rounded-full animate-spin
         ${sizeMap[size]}
         ${colorMap[color]}
         ${className}
-      `}
+      `.trim()}
     />
   );
 }
 
-export function LoadingSpinnerOverlay({ message = "جاري التحميل..." }: { message?: string }) {
+/* ────────────────────────────────────────────────────────────
+   Full-page overlay spinner
+   ──────────────────────────────────────────────────────────── */
+export function LoadingSpinnerOverlay({
+  message = "جاري التحميل...",
+}: {
+  message?: string;
+}) {
   return (
-    <div className="flex flex-col items-center justify-center gap-4 py-12">
+    <div
+      className="flex flex-col items-center justify-center gap-5 py-16"
+      role="status"
+      aria-live="polite"
+    >
+      {/* Pulsing ring + spinner */}
       <div className="relative">
-        {/* Outer ring pulse */}
-        <div className="absolute inset-0 rounded-full bg-teal-400/20 animate-ping" />
+        <div className="absolute inset-0 rounded-full bg-teal-300/25 animate-ping" />
         <LoadingSpinner size="xl" color="teal" />
       </div>
-      <p className="text-slate-600 font-medium text-lg animate-pulse">{message}</p>
+
+      {/* Message */}
+      <p className="text-slate-600 font-semibold text-base animate-pulse">
+        {message}
+      </p>
+    </div>
+  );
+}
+
+/* ────────────────────────────────────────────────────────────
+   Inline skeleton shimmer block
+   ──────────────────────────────────────────────────────────── */
+export function SkeletonBlock({
+  className = "",
+}: {
+  className?: string;
+}) {
+  return (
+    <div
+      aria-hidden="true"
+      className={`
+        bg-slate-200 rounded-xl overflow-hidden relative
+        ${className}
+      `}
+    >
+      <div className="absolute inset-0 shimmer" />
     </div>
   );
 }
